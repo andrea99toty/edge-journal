@@ -3,6 +3,15 @@
 Ogni aggiornamento lascia una copia completa del journal nella cartella [`versioni/`](versioni/), così si può sempre tornare a una versione precedente.
 I dati (trade, impostazioni, screenshot) stanno su Supabase e non cambiano quando si cambia versione del codice.
 
+## v1.2 — 24 novembre 2026 · [`versioni/index-v1.2.html`](versioni/index-v1.2.html)
+- Report a verdetti: il tuo vantaggio, cosa fare di più, cosa evitare, come gestisci il trade, la tua testa, azione della settimana. Ogni verdetto ha un'etichetta di affidabilità (Indizio, Probabile, Confermato); i numeri sono nei "Dettagli"
+- Confronto con l'alternativa per breakeven dopo il TP1, chiusure manuali e trailing, parziali o tenere tutto, stop troppo stretto
+- Tipo di target per ogni TP (struttura, liquidità responsabili, primo arrivo) e verdetto su quale viene raggiunto più spesso
+- Tipo di ingresso (pendente sulla zona o a mercato sul trigger)
+- Domanda facoltativa "dopo la tua uscita" con regola fissa: si guarda solo quale livello il prezzo tocca per primo
+- Escursione dei trade in pips da MAE e MFE (valori tipici, cioè mediane), con il valore del pip nelle Impostazioni
+- I vecchi report con i numeri restano in "Tutti i dettagli con i numeri"
+
 ## v1.1 — 23 novembre 2026 · [`versioni/index-v1.1.html`](versioni/index-v1.1.html)
 - Bozze automatiche del form, con "Riprendi / Scarta"
 - Modulo rapido per il backtest (risultato dai prezzi in R, "Salva e nuovo")
