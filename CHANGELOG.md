@@ -3,6 +3,13 @@
 Ogni aggiornamento lascia una copia completa del journal nella cartella [`versioni/`](versioni/), così si può sempre tornare a una versione precedente.
 I dati (trade, impostazioni, screenshot) stanno su Supabase e non cambiano quando si cambia versione del codice.
 
+## v1.3 — 25 novembre 2026 · [`versioni/index-v1.3.html`](versioni/index-v1.3.html)
+- Tolta l'azione della settimana dai Report
+- Tolto il campo Regime (form, filtri, report, scheda del trade)
+- Checklist diventata "Regole di esecuzione": 5 regole tecniche con casella, più 2 controlli automatici (rischio entro il limite, stop uguale al piano). Nei Report, regola per regola, se rispettarla ti fa rendere di più
+- Errori ridotti a 8, in italiano semplice; i vecchi errori dei trade salvati vengono tradotti nei nuovi nomi
+- Regole ed errori mostrati come righe con casella, leggibili anche con frasi lunghe
+
 ## v1.2 — 24 novembre 2026 · [`versioni/index-v1.2.html`](versioni/index-v1.2.html)
 - Report a verdetti: il tuo vantaggio, cosa fare di più, cosa evitare, come gestisci il trade, la tua testa, azione della settimana. Ogni verdetto ha un'etichetta di affidabilità (Indizio, Probabile, Confermato); i numeri sono nei "Dettagli"
 - Confronto con l'alternativa per breakeven dopo il TP1, chiusure manuali e trailing, parziali o tenere tutto, stop troppo stretto
