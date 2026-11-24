@@ -215,6 +215,16 @@ label.l,.lbl{display:block;font-size:12px;font-weight:500;color:var(--mut);margi
 .vaction{background:var(--acc-soft);border:1px solid var(--acc);border-radius:16px;padding:16px 18px;font-size:14.5px;line-height:1.6}
 details.more{margin-top:8px}
 details.more > summary{cursor:pointer;font:700 15px var(--f-display);padding:12px 0;color:var(--acc)}
+.cklist{display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:8px}
+.cklist .gitem{padding:10px 12px;align-items:center}
+.cklist .gitem span.t{font-size:13.5px;line-height:1.4}
+.cklist.bad .gitem.on{border-color:var(--loss);background:var(--loss-soft)}
+.cklist.bad .gitem.on .box{background:var(--loss);border-color:var(--loss);color:#fff}
+.autochk{display:grid;gap:6px;margin-top:10px;font-size:13px}
+.autochk div{display:flex;gap:8px;align-items:center;padding:8px 12px;border-radius:12px;background:var(--surface2)}
+.autochk .ok{color:var(--win)}.autochk .no{color:var(--loss)}.autochk .na{color:var(--faint)}
+.viewlist{display:grid;gap:4px;font-size:13.5px}
+.viewlist div{display:flex;gap:8px;align-items:flex-start}
 .tv{display:flex;align-items:center;justify-content:center;gap:9px;padding:13px;border-radius:12px;background:var(--blue-soft);border:1px solid var(--blue);color:var(--blue);font-weight:600;text-decoration:none;margin-top:12px}
 .footacts{display:flex;gap:10px;margin-top:16px;position:sticky;bottom:calc(-40px - env(safe-area-inset-bottom,0px));background:var(--bg);padding:12px 0 calc(14px + env(safe-area-inset-bottom,0px))}
 .footacts .pri{flex:1}
@@ -331,7 +341,7 @@ details.more > summary{cursor:pointer;font:700 15px var(--f-display);padding:12p
    <select id="fRes"><option value="">Tutti gli esiti</option><option value="win">Solo win</option><option value="loss">Solo loss</option><option value="be">Breakeven</option></select>
    <input type="date" id="fFrom" aria-label="Dal"><input type="date" id="fTo" aria-label="Al">
    <input type="time" id="fH1" aria-label="Dalle ore"><input type="time" id="fH2" aria-label="Alle ore">
-   <select id="fSetup"></select><select id="fSess"></select><select id="fEmo"></select><select id="fNews"></select><select id="fReg"></select><select id="fGrade"></select><select id="fVer"></select>
+   <select id="fSetup"></select><select id="fSess"></select><select id="fEmo"></select><select id="fNews"></select><select id="fGrade"></select><select id="fVer"></select>
    <select id="fDir"><option value="">Long e Short</option><option>Long</option><option>Short</option></select>
    <select id="fMis"><option value="">Con e senza errori</option><option value="no">Senza errori</option><option value="si">Con errori</option></select>
    <button class="btn sm" id="fReset">Azzera</button>
@@ -546,19 +556,19 @@ details.more > summary{cursor:pointer;font:700 15px var(--f-display);padding:12p
   <div class="sec" data-full>
    <h4>Contesto di mercato</h4>
    <div class="sub2">News del giorno</div><div class="chips" data-chips="news"></div>
-   <div class="sub2">Regime</div><div class="chips" data-chips="regime"></div>
   </div>
 
   <div class="sec" data-when="plan,open,closed" data-full>
-   <h4>Checklist regole</h4>
-   <div class="chips" data-chips="rules" data-multi="1"></div>
+   <h4>Regole di esecuzione <small>spunta quelle che hai rispettato</small></h4>
+   <div class="cklist" data-ck="rules"></div>
+   <div class="autochk" id="autoChecks"></div>
   </div>
 
   <div class="sec" data-full>
    <h4>Psicologia ed esecuzione</h4>
    <div data-when="plan,open,closed,missed"><div class="sub2">Emozione prima del trade</div><div class="chips" data-chips="emo"></div></div>
    <div data-when="closed"><div class="sub2">Emozione dopo il trade</div><div class="chips" data-chips="emo2"></div></div>
-   <div data-when="closed"><div class="sub2">Errori commessi</div><div class="chips bad" data-chips="mis" data-multi="1"></div></div>
+   <div data-when="closed"><div class="sub2">Errori commessi</div><div class="cklist bad" data-ck="mis"></div></div>
    <div data-when="plan,open,closed"><div class="sub2">Qualità del setup</div><div class="stars" id="stars"></div></div>
    <div data-when="closed"><div class="sub2">Voto all'esecuzione <span class="mut" style="font-weight:400">· giudica la decisione, non il risultato</span></div><div class="chips" data-chips="grade"></div></div>
   </div>
@@ -598,9 +608,10 @@ const lsGet=k=>{try{return localStorage.getItem(k)}catch(e){return null}};
 const lsSet=(k,v)=>{try{localStorage.setItem(k,v);return true}catch(e){return false}};
 
 const EMO=['Calmo','Concentrato','Fiducioso','Ansioso','Paura','Avidità','FOMO','Revenge','Annoiato','Euforico','Frustrato','Stanco'];
-const MIS=['Entrata anticipata','Entrata in ritardo','Stop spostato','Uscita anticipata','Overtrading','Size eccessiva','Fuori piano','Nessuno stop','Trade in news','Chasing'];
+const MIS=['Entrato prima della conferma','Entrato in ritardo','Inseguito il prezzo, che era già partito','Allargato o spostato lo stop contro di me','Chiuso troppo presto, per paura','Usato più lotti del previsto','Trade fuori dal piano: setup non valido','Trade per rifarmi di una perdita'];
+const MISMAP={'Entrata anticipata':'Entrato prima della conferma','Entrata in ritardo':'Entrato in ritardo','Chasing':'Inseguito il prezzo, che era già partito','Stop spostato':'Allargato o spostato lo stop contro di me','Uscita anticipata':'Chiuso troppo presto, per paura','Size eccessiva':'Usato più lotti del previsto','Fuori piano':'Trade fuori dal piano: setup non valido'};
+const normMis=a=>[...new Set((a||[]).map(x=>MISMAP[x]||x).filter(x=>MIS.includes(x)))];
 const NEWS=['Nessuna','CPI','NFP','FOMC','PCE','Altra news'];
-const REG=['Trend','Range','Volatile'];
 const GRADE=['A','B','C','D'];
 const MISSWHY=['Pendente non eseguito','Paura','Dubbio sul setup','Non ero al PC','Distrazione','Prezzo scappato','Altro'];
 const EXITS=['Breakeven','Stop loss','Trailing stop','Chiusura manuale','Tutto sui TP'];
@@ -621,13 +632,13 @@ Assenza di evento macro entro 12 ore | Nessun dato ad alto impatto nella finestr
 Stato personale conforme | Riposo sopra soglia, nessun blocco attivo, nessuna operazione in perdita aperta.`,gridMin:6,capital:10000,ccy:'€',fx:1.08,risk:1,daily:3,version:'v1',step:0.01,base:'saldo',
  instruments:'XAUUSD = 100',
  setups:'Struttura HTF a favore\nLivello chiave / zona\nLiquidity sweep\nBreak of structure\nRetest\nFair value gap\nPattern candlestick',
- rules:'Bias del timeframe superiore allineato\nLivello chiave chiaro\nR:R minimo 1:2\nNessuna news forte nei prossimi 30 min\nStop loss piazzato prima di entrare\nRischio entro il limite'};
+ rules:'Ho aspettato la chiusura della candela trigger\nSono entrato dentro la zona prevista, senza inseguire il prezzo\nLo stop è oltre il livello tecnico, non in mezzo alla zona\nIl TP1 è su una leg interna, non sull\'estremo\nHo calcolato i lotti con il rischio stabilito',rulesOld:'Bias del timeframe superiore allineato\nLivello chiave chiaro\nR:R minimo 1:2\nNessuna news forte nei prossimi 30 min\nStop loss piazzato prima di entrare\nRischio entro il limite'};
 const LKEY='edgejournal_v3_docs';
 
 const S={docs:{},mode:lsGet('ej3_mode')==='bt'?'bt':'live',page:'dashboard',col:null,assets:null,dl:null,sync:'local',calDate:new Date(),charts:{},statusF:'',firstData:false,offeredLocal:false};
 
 /* ---------- dati ---------- */
-const trades=(m=S.mode)=>Object.entries(S.docs).filter(([,v])=>v&&v.type==='trade'&&v.mode===m).map(([k,v])=>({...v,id:k}));
+const trades=(m=S.mode)=>Object.entries(S.docs).filter(([,v])=>v&&v.type==='trade'&&v.mode===m).map(([k,v])=>({...v,id:k,mis:normMis(v.mis)}));
 const settings=(m=S.mode)=>({...DEF,...(S.docs['set_'+m]||{})});
 const lines=s=>String(s||'').split('\n').map(x=>x.trim()).filter(Boolean);
 const instruments=s=>lines(s.instruments).map(l=>{const a=l.split('=');return{sym:a[0].trim().toUpperCase(),cs:P(a[1])||100}});
@@ -751,7 +762,7 @@ function go(p,push=true){if(!PAGES[p])p='dashboard';S.page=p;
 function setMode(m){S.mode=m;lsSet('ej3_mode',m);fillSettings();resetFilters(false);render()}
 
 /* ---------- filtri ---------- */
-const FIDS=['fRes','fFrom','fTo','fH1','fH2','fSetup','fSess','fEmo','fNews','fReg','fGrade','fVer','fDir','fMis'];
+const FIDS=['fRes','fFrom','fTo','fH1','fH2','fSetup','fSess','fEmo','fNews','fGrade','fVer','fDir','fMis'];
 function resetFilters(r=true){FIDS.forEach(i=>$(i).value='');if(r)render()}
 function fill(id,vals,all){const el=$(id),v=el.value;el.innerHTML=`<option value="">${all}</option>`+vals.map(x=>`<option>${esc(x)}</option>`).join('');el.value=vals.includes(v)?v:''}
 function applyF(list){const v=i=>$(i).value;return list.filter(t=>!(
@@ -759,7 +770,7 @@ function applyF(list){const v=i=>$(i).value;return list.filter(t=>!(
  (v('fFrom')&&t.date<v('fFrom'))||(v('fTo')&&t.date>v('fTo'))||
  (v('fH1')&&(!t.time||t.time<v('fH1')))||(v('fH2')&&(!t.time||t.time>v('fH2')))||
  (v('fSetup')&&!setupsOf(t).includes(v('fSetup')))||(v('fSess')&&t.sess!==v('fSess'))||(v('fEmo')&&t.emo!==v('fEmo'))||
- (v('fNews')&&t.news!==v('fNews'))||(v('fReg')&&t.regime!==v('fReg'))||(v('fGrade')&&t.grade!==v('fGrade'))||(v('fVer')&&t.version!==v('fVer'))||
+ (v('fNews')&&t.news!==v('fNews'))||(v('fGrade')&&t.grade!==v('fGrade'))||(v('fVer')&&t.version!==v('fVer'))||
  (v('fDir')&&t.dir!==v('fDir'))||(v('fMis')==='no'&&(t.mis||[]).length)||(v('fMis')==='si'&&!(t.mis||[]).length)))}
 const sortT=a=>a.sort((x,y)=>(x.in||'').localeCompare(y.in||''));
 
@@ -795,7 +806,7 @@ function render(){
  const mt=$('mtag');mt.dataset.m=S.mode;mt.textContent=S.mode==='live'?'LIVE':'BACKTEST';
  $('drawer').style.borderTop='3px solid var('+(S.mode==='live'?'--win':'--blue')+')';
  fill('fSetup',lines(s.setups),'Tutti i setup');fill('fSess',['Asia','Londra','Overlap Londra-NY','New York'],'Tutte le sessioni');fill('fEmo',EMO,'Tutte le emozioni');
- fill('fNews',NEWS,'News: tutte');fill('fReg',REG,'Regime: tutti');fill('fGrade',GRADE,'Voto: tutti');fill('fVer',[...new Set(all.map(t=>t.version).filter(Boolean))],'Tutte le versioni');
+ fill('fNews',NEWS,'News: tutte');fill('fGrade',GRADE,'Voto: tutti');fill('fVer',[...new Set(all.map(t=>t.version).filter(Boolean))],'Tutte le versioni');
  $('dlSym').innerHTML=[...new Set([...instruments(s).map(i=>i.sym),...all.map(t=>t.sym)])].map(x=>`<option value="${esc(x)}">`).join('');
  const st=stats(closed,s),nf=FIDS.filter(i=>$(i).value).length;
  $('fBtn').textContent=nf?`Filtri (${nf})`:'Filtri';
@@ -911,7 +922,6 @@ function dims(s){const BAD=['Ansioso','Paura','Avidità','FOMO','Revenge','Frust
  ['Sessione',t=>t.sess||null],
  ['Giorno',t=>t.date?['Domenica','Lunedì','Martedì','Mercoledì','Giovedì','Venerdì','Sabato'][new Date(t.date+'T12:00').getDay()]:null],
  ['News',t=>t.news?(t.news==='Nessuna'?'Giorni senza news':'Giorni di news'):null],
- ['Regime',t=>t.regime||null],
  ['Direzione',t=>t.dir||null],
  ['Ingresso',t=>t.entryType||null],
  ['Direzione e sessione',t=>t.dir&&t.sess?t.dir+' a '+t.sess:null],
@@ -966,10 +976,14 @@ function renderVerdicts(d,s,all){const rs=d.map(t=>t.r).filter(x=>x!=null),n=rs.
   H.push(afL.length<3||afW.length<3?fewCard('Dopo una perdita','Con qualche trade in più vedrai se dopo una perdita operi peggio (il rischio revenge).'):(()=>{const a=avgOf(afW),b=avgOf(afL);return vcard('Dopo una perdita',b<a-0.2?'bad':'good',b<a-0.2?'Attenzione':'Sotto controllo',afL.length,b<a-0.2?`Il trade dopo una perdita va ${strength(a-b)} peggio degli altri: dopo uno stop, fai una pausa prima del prossimo.`:'Dopo una perdita mantieni la stessa qualità: bene.',`Dopo una perdita: ${fR(b)} · dopo una vincita: ${fR(a)}`)})())}
  {const ga=d.filter(t=>(t.grade==='A'||t.grade==='B')&&t.r!=null),gc=d.filter(t=>(t.grade==='C'||t.grade==='D')&&t.r!=null);
   H.push(ga.length<2||gc.length<2?fewCard('Il valore della disciplina','Dai un voto all\'esecuzione dei trade chiusi: vedrai quanto vale eseguire bene.'):(()=>{const a=avgOf(ga.map(t=>t.r)),b=avgOf(gc.map(t=>t.r));return vcard('Il valore della disciplina',a>b?'good':'neutral',a>b?'Paga':'Per ora no',Math.min(ga.length,gc.length),a>b?`Quando esegui bene (voto A o B) rendi ${strength(a-b)} di più di quando esegui male.`:'Per ora eseguire bene o male non cambia il risultato: serve un campione più grande.',`A/B: ${fR(a)} · C/D: ${fR(b)}`)})())}
+ {const E=[],miss=[];lines(s.rules).forEach(rule=>{const rel=d.filter(t=>t.r!=null&&(t.rulesSet||[]).includes(rule)),y=rel.filter(t=>(t.rules||[]).includes(rule)),no=rel.filter(t=>!(t.rules||[]).includes(rule));
+   if(y.length<2||no.length<2){miss.push(rule);return}const a=avgOf(y.map(t=>t.r)),b=avgOf(no.map(t=>t.r));
+   E.push(vcard(esc(rule),a-b>=0.2?'good':'neutral',a-b>=0.2?'Conta':'Per ora non cambia',Math.min(y.length,no.length),a-b>=0.2?`Quando la rispetti rendi ${strength(a-b)} meglio di quando la salti.`:'Rispettarla o no, per ora il risultato è simile.',`Rispettata: ${fR(a)} a trade · saltata: ${fR(b)} a trade`))});
+  [['Rischio entro il limite','autoRiskOk','Quando rischi più del previsto rendi'],['Stop non spostato rispetto al piano','autoStopOk','Quando sposti lo stop rendi']].forEach(([title,f,txt])=>{const y=d.filter(t=>t.r!=null&&t[f]===true),no=d.filter(t=>t.r!=null&&t[f]===false);if(y.length<2||no.length<2)return;const a=avgOf(y.map(t=>t.r)),b=avgOf(no.map(t=>t.r));
+   E.push(vcard(title,a-b>=0.2?'good':'neutral',a-b>=0.2?'Conta':'Per ora non cambia',Math.min(y.length,no.length),a-b>=0.2?`${txt} ${strength(a-b)} peggio.`:'Per ora non cambia il risultato.',`Rispettata: ${fR(a)} · no: ${fR(b)}`))});
+  if(miss.length)E.push(fewCard(E.length?'Le altre regole':'Regole di esecuzione',`Spunta nei trade chiusi le regole che hai rispettato: quando avrai almeno 2 trade in cui una regola è rispettata e 2 in cui no, vedrai se ti fa rendere di più.`));
+  html+=sec('Regole di esecuzione','Rispettare le tue regole ti fa rendere di più?',`<div class="vgrid">${E.join('')}</div>`)}
  html+=sec('La tua testa','',`<div class="vgrid">${H.join('')}</div>`);
- // 6 action
- const cand=[...neg.filter(g=>g.n>=10).map(g=>({txt:`evita <b>${esc(g.k.toLowerCase())}</b> (${esc(g.dim.toLowerCase())}): è dove perdi di più`,w:-g.avg*Math.sqrt(g.n)})),...pos.filter(g=>g.n>=10).map(g=>({txt:`concentrati su <b>${esc(g.k.toLowerCase())}</b> (${esc(g.dim.toLowerCase())}): è dove rendi meglio`,w:(g.avg-overall)*Math.sqrt(g.n)}))].sort((a,b)=>b.w-a.w);
- html+=sec('Azione della settimana','',`<div class="vaction">${cand.length?`Per le prossime 2 settimane, ${cand[0].txt}. Poi torna qui e guarda se il verdetto si conferma.`:'Ancora pochi dati per un\'azione affidabile: servono almeno 10 trade nella stessa condizione. Per ora l\'azione è una sola: registra ogni trade con griglia, tipo di target e domanda "dopo l\'uscita".'}</div>`);
  $('verdicts').innerHTML=html}
 function renderReports(d,s,all){
  renderVerdicts(d,s,all);
@@ -993,7 +1007,6 @@ function renderReports(d,s,all){
   card('Per giorno',bars(grp(d,t=>t.date?DAYS[new Date(t.date+'T12:00').getDay()]:null)))+
   card('Per ora di entrata',bars(grp(d,t=>t.time?t.time.slice(0,2)+':00':null)))+
   card('Giorni di news',bars(grp(d,t=>t.news)))+
-  card('Per regime di mercato',bars(grp(d,t=>t.regime)))+
   card('Long e Short',bars(grp(d,t=>t.dir)))+
   card('Per durata',bars(grp(d,dur)))+
   card('Come esce il resto della posizione',bars(grp(d,t=>t.exitType)))+
@@ -1094,7 +1107,7 @@ async function signNow(){const ids=[...signQ];signQ.clear();if(!ids.length||!S.a
 const safeUrl=u=>{u=(u||'').trim();if(!u)return'';if(!/^https?:\/\//i.test(u))u='https://'+u;try{const x=new URL(u);return x.protocol==='https:'||x.protocol==='http:'?x.href:''}catch(e){return''}};
 function openDrawer(){$('drawerWrap').hidden=false;document.body.style.overflow='hidden'}
 function closeDrawer(){$('drawerWrap').hidden=true;document.body.style.overflow='';openViewId=null}
-function renderView(id){const t=S.docs[id];if(!t){closeDrawer();return}const s=settings(t.mode),st=t.status||'closed',d=derive(t,s),u=safeUrl(t.link);
+function renderView(id){const t0=S.docs[id],t=t0?{...t0,mis:normMis(t0.mis)}:null;if(!t){closeDrawer();return}const s=settings(t.mode),st=t.status||'closed',d=derive(t,s),u=safeUrl(t.link);
  const kv=(k,v)=>`<div><span>${k}</span><b>${v}</b></div>`;
  const tps=(t.targets||[]).map((x,i)=>kv(`TP${i+1} · ${x.pct??'–'}% · ${x.st==='hit'?'preso':x.st==='miss'?'mancato':'in attesa'}`,px(x.p))).join('');
  const devs=[];const pl=t.plan;if(pl&&st!=='plan'){if(pl.entry!=null&&t.entry!=null&&pl.entry!==t.entry)devs.push(`Entrata cambiata da ${px(pl.entry)} a ${px(t.entry)}`);if(pl.sl!=null&&t.sl!=null&&pl.sl!==t.sl)devs.push(`Stop spostato da ${px(pl.sl)} a ${px(t.sl)}`);if(pl.lots!=null&&t.lots!=null&&pl.lots!==t.lots)devs.push(`Lotti cambiati da ${px(pl.lots)} a ${px(t.lots)}`);const a=(pl.targets||[]).map(x=>x.p).join('|'),b=(t.targets||[]).map(x=>x.p).join('|');if(a&&a!==b)devs.push('Take profit modificati rispetto al piano')}
@@ -1107,8 +1120,8 @@ function renderView(id){const t=S.docs[id];if(!t){closeDrawer();return}const s=s
  ${(t.imgs||[]).length?`<div class="sec"><h4>Screenshot</h4><div class="shots">${t.imgs.map(x=>`<figure><img src="${esc(imgSrc(x))}" data-zoom alt="Screenshot del trade"></figure>`).join('')}</div></div>`:''}
  <div class="sec"><h4>Livelli e numeri</h4><div class="kv">${kv('Entrata',px(t.entry))}${kv('Stop loss',px(t.sl))}${tps}${st==='closed'||st==='missed'?kv('Uscita resto'+(t.exitType?' · '+esc(t.exitType.toLowerCase()):''),px(t.exit)):''}${kv('Lotti',px(t.lots))}${kv('Rischio',money(d.risk,s))}${kv('R:R piano',t.rrPlan!=null?'1:'+t.rrPlan.toFixed(2).replace('.',','):'–')}${st==='closed'?kv('MAE',t.maeR!=null?t.maeR.toFixed(2).replace('.',',')+'R':'–')+kv('MFE',t.mfeR!=null?t.mfeR.toFixed(2).replace('.',',')+'R':'–')+kv('Profitto',money(t.gross,s))+kv('Commissioni',money(t.fees||0,s))+kv('Swap',money(t.swap||0,s)):''}</div>
  ${devs.length?`<div class="sub2">Piano contro esecuzione</div>${devs.map(x=>`<div class="dev">${esc(x)}</div>`).join('')}`:(pl&&st==='closed'&&t.plannedAhead?'<div class="dev ok">Eseguito come da piano</div>':'')}</div>
- ${t.gridTot?`<div class="sec"><h4>Griglia delle conferme <span class="score ${t.gridOk?'ok':'no'}">${t.gridScore}/${t.gridTot} · ${t.gridOk?'setup valido':'non valido'}</span></h4><div class="gridlist">${gridOf(s).map((x,i)=>`<div class="gitem ${(t.grid||[]).includes(x.t)?'on':''}" style="cursor:default"><span class="box">✓</span><div><b>${i+1}. ${esc(x.t)}</b></div></div>`).join('')}</div></div>`:''}<div class="sec"><h4>Setup e contesto</h4>${chipsV('Pattern',setupsOf(t))}${chipsV('Versione playbook',t.version)}${chipsV('News',t.news)}${chipsV('Regime',t.regime)}${t.rulesTot?`<div class="sub2">Checklist</div><div class="mut">${(t.rules||[]).length} regole su ${t.rulesTot} rispettate</div>`:''}</div>
- <div class="sec"><h4>Psicologia</h4>${chipsV('Prima del trade',t.emo)}${chipsV('Dopo il trade',t.emo2)}${(t.mis||[]).length?`<div class="sub2">Errori</div><div>${t.mis.map(x=>`<span class="pill bad">${esc(x)}</span>`).join('')}</div>`:''}${t.rating?`<div class="sub2">Qualità del setup</div><div class="gold" style="font-size:18px">${'★'.repeat(t.rating)}<span style="color:var(--line2)">${'★'.repeat(5-t.rating)}</span></div>`:''}</div>
+ ${t.gridTot?`<div class="sec"><h4>Griglia delle conferme <span class="score ${t.gridOk?'ok':'no'}">${t.gridScore}/${t.gridTot} · ${t.gridOk?'setup valido':'non valido'}</span></h4><div class="gridlist">${gridOf(s).map((x,i)=>`<div class="gitem ${(t.grid||[]).includes(x.t)?'on':''}" style="cursor:default"><span class="box">✓</span><div><b>${i+1}. ${esc(x.t)}</b></div></div>`).join('')}</div></div>`:''}<div class="sec"><h4>Setup e contesto</h4>${chipsV('Pattern',setupsOf(t))}${chipsV('Versione playbook',t.version)}${chipsV('News',t.news)}${t.rulesSet&&t.rulesSet.length?`<div class="sub2">Regole di esecuzione</div><div class="viewlist">${t.rulesSet.map(x=>`<div><span class="${(t.rules||[]).includes(x)?'win':'loss'}">${(t.rules||[]).includes(x)?'✓':'✗'}</span>${esc(x)}</div>`).join('')}${t.autoRiskOk!=null?`<div><span class="${t.autoRiskOk?'win':'loss'}">${t.autoRiskOk?'✓':'✗'}</span>Rischio ${t.autoRiskOk?'entro':'sopra'} il limite</div>`:''}${t.autoStopOk!=null?`<div><span class="${t.autoStopOk?'win':'loss'}">${t.autoStopOk?'✓':'✗'}</span>${t.autoStopOk?'Stop uguale al piano':'Stop spostato rispetto al piano'}</div>`:''}</div>`:''}</div>
+ <div class="sec"><h4>Psicologia</h4>${chipsV('Prima del trade',t.emo)}${chipsV('Dopo il trade',t.emo2)}${(t.mis||[]).length?`<div class="sub2">Errori</div><div class="viewlist">${t.mis.map(x=>`<div><span class="loss">✗</span>${esc(x)}</div>`).join('')}</div>`:''}${t.rating?`<div class="sub2">Qualità del setup</div><div class="gold" style="font-size:18px">${'★'.repeat(t.rating)}<span style="color:var(--line2)">${'★'.repeat(5-t.rating)}</span></div>`:''}</div>
  ${t.thesis||t.notes?`<div class="sec"><h4>Note</h4>${t.thesis?`<div class="sub2">Tesi</div><div class="prose">${esc(t.thesis)}</div>`:''}${t.notes?`<div class="sub2">Com'è andata</div><div class="prose">${esc(t.notes)}</div>`:''}</div>`:''}`;}
 function openView(id){openViewId=id;$('viewPane').hidden=false;$('editPane').hidden=true;renderView(id);openDrawer();$('drawer').scrollTop=0}
 
@@ -1123,7 +1136,7 @@ function draftClear(){clearTimeout(draftT);try{localStorage.removeItem(draftKey(
 const ago=ms=>{const m=Math.round(ms/60000);return m<1?'meno di un minuto':m<60?m+' min':Math.round(m/60)+' ore'};
 function openEdit(id,preset,fromDraft){editId=id||null;const s=settings();cur=fromDraft?clone(fromDraft):id?clone(S.docs[id]):Object.assign(blankTrade(),preset||{});
  if(cur.quick==null)cur.quick=false;
- if(!cur.targets||!cur.targets.length)cur.targets=[{p:null,pct:null,st:'wait'}];cur.setups=setupsOf(cur);cur.imgs=cur.imgs||[];cur.rules=cur.rules||[];cur.mis=cur.mis||[];cur.status=cur.status||'closed';
+ if(!cur.targets||!cur.targets.length)cur.targets=[{p:null,pct:null,st:'wait'}];cur.setups=setupsOf(cur);cur.imgs=cur.imgs||[];cur.rules=cur.rules||[];cur.mis=normMis(cur.mis);cur.status=cur.status||'closed';
  origImgs=cur.imgs.filter(x=>x.id).map(x=>x.id);
  $$('#editPane [data-f]').forEach(el=>{const v=cur[el.dataset.f];el.value=v==null?'':(el.dataset.n?px(v):v)});
  cur.grid=cur.grid||[];drawChips();drawGrid();drawTPs();drawShots();drawStars();linkBtn();applyStatus();calc();
@@ -1132,7 +1145,9 @@ function openEdit(id,preset,fromDraft){editId=id||null;const s=settings();cur=fr
  const dr=fromDraft?null:draftGet();
  $('draftBox').innerHTML=dr&&dr.cur&&dr.editId===(id||null)&&!preset?`<div class="banner" style="margin:6px 0 0"><span>Hai una bozza non salvata di ${ago(Date.now()-dr.at)} fa.</span><span style="display:flex;gap:8px"><button class="btn sm pri" id="draftUse">Riprendi la bozza</button><button class="btn sm ghost" id="draftDrop">Scarta</button></span></div>`:'';
  $('viewPane').hidden=true;$('editPane').hidden=false;openDrawer();$('drawer').scrollTop=0}
-function drawChips(){const s=settings(),src={setups:[...new Set([...lines(s.setups),...cur.setups])],rules:[...new Set([...lines(s.rules),...cur.rules])],mis:MIS,exitType:EXITS,entryType:ENTRY,news:NEWS,regime:REG,emo:EMO,emo2:EMO,grade:GRADE,missWhy:MISSWHY};
+function drawChecks(){const s=settings(),src={rules:lines(s.rules),mis:MIS};
+ $$('#editPane [data-ck]').forEach(c=>{const f=c.dataset.ck,sel=cur[f]||[];c.innerHTML=src[f].map(x=>`<div class="gitem ${sel.includes(x)?'on':''}" role="checkbox" aria-checked="${sel.includes(x)}" tabindex="0" data-ckv="${esc(x)}"><span class="box">✓</span><span class="t">${esc(x)}</span></div>`).join('')})}
+function drawChips(){drawChecks();const s=settings(),src={setups:[...new Set([...lines(s.setups),...cur.setups])],rules:[...new Set([...lines(s.rules),...cur.rules])],mis:MIS,exitType:EXITS,entryType:ENTRY,news:NEWS,emo:EMO,emo2:EMO,grade:GRADE,missWhy:MISSWHY};
  $$('#editPane [data-chips]').forEach(c=>{const f=c.dataset.chips,multi=!!c.dataset.multi,sel=multi?(cur[f]||[]):[cur[f]];c.innerHTML=src[f].map(x=>`<span class="chip ${sel.includes(x)?'on':''}" role="button" tabindex="0" data-c="${esc(x)}">${esc(x)}</span>`).join('')});
  $$('#editPane [data-seg]').forEach(g=>$$('button',g).forEach(b=>b.classList.toggle('on',cur[g.dataset.seg]===b.dataset.v)))}
 function drawGrid(){const s=settings(),g=gridOf(s),sel=cur.grid||[],min=gridMinOf(s);
@@ -1161,6 +1176,8 @@ function calc(){syncExit();const s=settings(),d=derive(cur,s),f=v=>v==null?'–'
  $$('#tps .tprow').forEach((row,i)=>{const v=d.R(cur.targets[i]?.p);const el=row.querySelector('.rr');el.textContent=v==null?'–':'1:'+f(v);el.className='rr '+cls(v)});
  const bal=s.base==='iniziale'?s.capital:balanceOf(s,editId);
  const rp=d.risk!=null&&bal?d.risk/bal*100:null;
+ {const pl=editId&&S.docs[editId]&&S.docs[editId].plan,moved=pl&&pl.sl!=null&&cur.sl!=null&&pl.sl!==cur.sl;cur._riskOk=rp==null?null:rp<=s.risk*1.1;cur._stopOk=pl&&pl.sl!=null&&cur.sl!=null?!moved:null;
+  $('autoChecks').innerHTML=`<div><span class="${rp==null?'na':cur._riskOk?'ok':'no'}">${rp==null?'–':cur._riskOk?'✓':'✗'}</span>${rp==null?'Rischio entro il limite: inserisci lotti, entrata e stop':cur._riskOk?'Rischio entro il limite che hai impostato':'Rischio sopra il limite che hai impostato'} <span class="mut">· controllo automatico</span></div>${pl?`<div><span class="${moved?'no':'ok'}">${moved?'✗':'✓'}</span>${moved?'Stop spostato rispetto al piano iniziale':'Stop uguale al piano iniziale'} <span class="mut">· controllo automatico</span></div>`:''}`}
  $('calc').innerHTML=`<div>Rischio<b class="${rp>s.risk*1.25?'loss':''}">${money(d.risk,s)}</b></div><div>% del saldo<b class="${rp>s.risk*1.25?'loss':''}">${rp==null?'–':rp.toFixed(2).replace('.',',')+'%'}</b></div><div>R:R piano<b>${d.rr==null?'–':'1:'+f(d.rr)}</b></div>${cur.status==='missed'?`<div>R potenziale<b class="${cls(d.rPx??cur.missR)}">${fR(d.rPx??cur.missR)}</b></div>`:''}${cur.status==='closed'?`<div>Risultato<b class="${cls(d.r)}">${fR(d.r)}</b></div><div>Netto<b class="${cls(d.net)}">${money(d.net,s)}</b></div><div>Chiuso sui TP<b>${d.hp}%</b></div><div>Durata<b>${fmtDur(d.dh)}</b></div>`:''}<div>Sessione<b>${esc(session((cur.in||'').slice(11,16))||'–')}</b></div>`;
  const sp=splitLots(cur.lots,cur.targets.map(x=>x.pct),stepOf(s));
  $('tpLots').innerHTML=sp&&cur.targets.some(x=>x.pct)?'Lotti da chiudere: '+cur.targets.map((x,i)=>`TP${i+1} <b>${fl(sp.lots[i])}</b>`).join(' · ')+(sp.rest>0?` · resto <b>${fl(sp.rest)}</b>`:''):'';
@@ -1193,7 +1210,8 @@ function saveTrade(next){if(uploading){toast('Aspetta che finisca il caricamento
  const d=derive(t,s);
  if(t.status==='closed'&&d.est!=null&&t.gross!=null&&Math.abs(d.est)>=1&&t.gross!==0&&Math.sign(t.gross)!==Math.sign(d.est)){toast(d.est<0?`Dai prezzi questo trade è una perdita (circa ${money(d.est,s)}), ma il profitto è positivo. Se hai perso, scrivilo col meno: −${px(Math.abs(t.gross))}`:`Dai prezzi questo trade è un guadagno (circa ${money(d.est,s)}), ma il profitto è negativo. Controlla il segno`,1);return}
  Object.assign(t,{type:'trade',mode:S.mode,pnl:t.status==='closed'?d.net:null,r:t.status==='closed'&&d.r!=null?+d.r.toFixed(3):null,riskEst:d.riskEst,rrPlan:d.rr!=null?+d.rr.toFixed(3):null,
-  missR:t.status==='missed'?(d.rPx!=null?+d.rPx.toFixed(3):t.missR??null):t.missR??null,maeR:d.maeR,mfeR:d.mfeR,durH:t.status==='closed'?d.dh:null,date:t.in.slice(0,10),time:t.in.slice(11,16),sess:session(t.in.slice(11,16)),rulesTot:lines(s.rules).length,updated:Date.now()});
+  missR:t.status==='missed'?(d.rPx!=null?+d.rPx.toFixed(3):t.missR??null):t.missR??null,maeR:d.maeR,mfeR:d.mfeR,durH:t.status==='closed'?d.dh:null,date:t.in.slice(0,10),time:t.in.slice(11,16),sess:session(t.in.slice(11,16)),rulesTot:lines(s.rules).length,rulesSet:lines(s.rules),autoRiskOk:cur._riskOk??null,autoStopOk:cur._stopOk??null,updated:Date.now()});
+ t.rules=(t.rules||[]).filter(x=>lines(s.rules).includes(x));t.mis=normMis(t.mis);delete t._riskOk;delete t._stopOk;
  {const g=gridOf(s).map(x=>x.t);t.grid=(t.grid||[]).filter(x=>g.includes(x));t.gridScore=t.grid.length;t.gridTot=g.length;t.gridOk=t.gridScore>=gridMinOf(s)}
  delete t.setup;delete t.id;delete t._autoBE;delete t.atr;delete t.stopAtr;
  if(!t.plan)t.plannedAhead=t.status==='plan'||t.status==='open';
@@ -1265,6 +1283,7 @@ document.addEventListener('click',e=>{const t=e.target;
  if(t.id==='daySave'){saveDay();return}
  if(t.id==='dayEdit'){const c=S.docs[dayId()];S.dayDraft={sleep:c.sleep,energy:c.energy,moods:[...(c.moods||[])],news:[...(c.news||[])],editing:true};renderDay(true);return}
  if(!cur||$('editPane').hidden)return;
+ const ck=t.closest('[data-ckv]');if(ck){const f=ck.parentNode.dataset.ck,v=ck.dataset.ckv,a=cur[f]||[];cur[f]=a.includes(v)?a.filter(x=>x!==v):[...a,v];drawChecks();draftSave();return}
  const af=t.closest('[data-after]');if(af){cur.after=cur.after===af.dataset.after?'':af.dataset.after;$('afterBox').dataset.k='';drawAfter();draftSave();return}
  const fm=t.closest('[data-fm]');if(fm){cur.quick=fm.dataset.fm==='quick';applyQuick();draftSave();return}
  if(t.closest('[data-after],.chip,.gitem,[data-seg] button,[data-star],[data-deltp],[data-delimg],#useEst,#addTP'))setTimeout(draftSave,0);
