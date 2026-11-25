@@ -101,8 +101,104 @@ button{font:inherit;color:inherit}
 .cal .d b{font:600 11px var(--f-mono);overflow:hidden;text-overflow:ellipsis}
 .cal .d.today{border-color:var(--line2)}
 
-.filters{display:flex;flex-wrap:wrap;gap:8px;align-items:center;margin-bottom:14px}
-.filters select,.filters input{width:auto;flex:0 1 auto;min-width:0}
+.btn.on{border-color:var(--acc);color:var(--acc);background:var(--acc-soft)}
+.fbar{display:flex;flex-wrap:wrap;gap:8px 10px;align-items:center;margin-bottom:14px}
+.fbar .seg button{padding:6px 11px;font-size:12.5px}
+.fdates{display:inline-flex;gap:6px;align-items:center}
+.fdates input{width:auto;padding:6px 8px;font-size:13px}
+.fchips{display:flex;flex-wrap:wrap;gap:6px;align-items:center;flex:1 1 100%;min-width:0}
+.fchip{display:inline-flex;align-items:center;gap:5px;max-width:min(440px,100%);min-width:0;padding:3px 3px 3px 11px;border-radius:20px;background:var(--acc-soft);border:1px solid var(--acc);font-size:12.5px}
+.fchip .fk{color:var(--mut);flex:none}
+.fchip .fv{overflow:hidden;text-overflow:ellipsis;white-space:nowrap;min-width:0;font-weight:600}
+.fchip button{border:0;background:none;color:var(--mut);cursor:pointer;font-size:16px;line-height:1;width:24px;height:24px;border-radius:50%;flex:none}
+.fchip button:hover{background:var(--surface2);color:var(--fg)}
+.fcount{margin-left:auto;font-size:12.5px;color:var(--mut);font-weight:600;white-space:nowrap}
+.fpanel{margin:-4px 0 14px}
+.pgs{display:grid;grid-template-columns:repeat(auto-fill,minmax(min(360px,100%),1fr));gap:14px 26px}
+.pg{min-width:0}
+.pgh{font:700 11.5px var(--f-body);text-transform:uppercase;letter-spacing:.07em;color:var(--faint);margin-bottom:4px}
+.prow{display:grid;grid-template-columns:118px minmax(0,1fr);gap:8px;align-items:start;padding:7px 0;border-top:1px solid var(--line)}
+.prow .pl{font-size:12.5px;color:var(--mut);padding-top:5px}
+.prow .chips{gap:5px}
+.prow .chip{padding:4px 10px;font-size:12.5px;max-width:100%;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.svlist{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:12px}
+.svitem{display:inline-flex;align-items:center;border:1px solid var(--line2);border-radius:20px;background:var(--surface2);max-width:100%;min-width:0}
+.svitem button{border:0;background:none;color:var(--fg);cursor:pointer;font:600 13px var(--f-body)}
+.svload{padding:6px 4px 6px 13px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;min-width:0}
+.svdel{padding:6px 11px 6px 6px;color:var(--mut)!important;font-size:15px!important}
+.svdel.armed{color:var(--loss)!important;font-size:12px!important}
+.svnew{display:flex;gap:8px;flex-wrap:wrap}.svnew input{flex:1 1 220px;max-width:360px;min-width:0}
+.rtabs{margin-bottom:14px}
+.synth p{margin:0;font-size:15px;line-height:1.7;max-width:120ch}
+.synth b.win{color:var(--win)}.synth b.loss{color:var(--loss)}
+.card h3 > span small{margin-left:8px}
+.fmap,.mgcard,.synth{margin-bottom:14px}
+.mlegend{display:flex;flex-wrap:wrap;gap:6px 16px;font-size:11.5px;color:var(--mut);margin:-4px 0 6px}
+.mlegend span{display:inline-flex;align-items:center;gap:6px}
+.lg{width:12px;height:12px;border-radius:4px;display:inline-block;background:var(--surface2);border:1px solid var(--line2)}
+.lg.good{background:var(--win-soft);border-color:var(--win)}.lg.bad{background:var(--loss-soft);border-color:var(--loss)}.lg.few{opacity:.45}
+.frow{display:grid;grid-template-columns:minmax(130px,190px) minmax(0,1fr);gap:6px 14px;padding:10px 0;border-top:1px solid var(--line);align-items:start}
+.frow .fl{font-weight:600;font-size:13.5px;padding-top:6px;display:flex;flex-direction:column;gap:2px}
+.frow .fl small{font:500 11px var(--f-body);color:var(--faint)}
+.mps{display:flex;flex-wrap:wrap;gap:6px;min-width:0}
+.mp{border:1px solid transparent;border-radius:10px;padding:6px 10px;font:600 13px var(--f-body);cursor:pointer;background:var(--surface2);color:var(--fg);display:inline-flex;gap:7px;align-items:baseline;max-width:100%;min-width:0}
+.mp .mv{overflow:hidden;text-overflow:ellipsis;white-space:nowrap;min-width:0}
+.mp small{font-weight:500;color:var(--mut);font-size:11.5px;white-space:nowrap}
+.mp.good{background:var(--win-soft);color:var(--win)}.mp.bad{background:var(--loss-soft);color:var(--loss)}
+.mp.good small,.mp.bad small{color:inherit;opacity:.8}
+.mp.l2{opacity:.75}.mp.few{opacity:.45}
+.mp.sel{border-color:currentColor;opacity:1}
+.mp:hover{filter:brightness(1.12)}
+.mdet{grid-column:2;background:var(--surface2);border-radius:12px;padding:11px 14px;font-size:13.5px;line-height:1.6}
+.mdet p{margin:0}
+.mdact{display:flex;flex-wrap:wrap;gap:8px 12px;align-items:center;margin-top:8px}
+.mdact .btn{margin-left:auto}
+.mglegend,.mg{display:grid;grid-template-columns:minmax(170px,340px) minmax(0,1fr) 96px;gap:14px;align-items:center}
+.mglegend{font-size:11.5px;color:var(--faint);padding-bottom:6px}
+.mgaxis{display:flex;justify-content:space-between}
+.mgsep{font:700 11.5px var(--f-body);text-transform:uppercase;letter-spacing:.07em;color:var(--faint);padding:16px 0 6px}
+.mg{padding:9px 6px;margin:0 -6px;border-top:1px solid var(--line);cursor:pointer;border-radius:8px}
+.mg:hover,.mg.open{background:var(--surface2)}
+.mgl{font-size:13.5px;font-weight:600;line-height:1.35;min-width:0;overflow-wrap:anywhere}
+.mgb{position:relative;display:grid;grid-template-columns:1fr 1fr;height:16px}
+.mgb::after{content:'';position:absolute;left:50%;top:-5px;bottom:-5px;width:1px;background:var(--line2)}
+.mgb .h{display:flex;align-items:center}.mgb .h.l{justify-content:flex-end}
+.mgb i{display:block;height:10px;background:var(--line2)}
+.mgb .h.l i{border-radius:5px 0 0 5px}.mgb .h.r i{border-radius:0 5px 5px 0}
+.mg.good .mgb i{background:var(--win)}.mg.bad .mgb i{background:var(--loss)}
+.mgb em{position:absolute;inset:0;display:grid;place-items:center;font-style:normal;font-size:11.5px;color:var(--faint);z-index:1}
+.mgb em::before{content:'';position:absolute;inset:0;margin:auto;width:84px;height:18px;background:var(--surface);border-radius:6px;z-index:-1}
+.mg:hover .mgb em::before,.mg.open .mgb em::before{background:var(--surface2)}
+.mgv{text-align:right;font-weight:700;font-size:13px;white-space:nowrap}
+.mg.good .mgv{color:var(--win)}.mg.bad .mgv{color:var(--loss)}.mg.neutral .mgv{color:var(--mut)}
+.mg.few .mgl{color:var(--mut);font-weight:500}
+.mgd{padding:4px 0 12px;font-size:13.5px;line-height:1.6;max-width:120ch}
+.mgd p{margin:0}
+.cmpgrid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px;margin-bottom:14px}
+.cside.picking{border-color:var(--acc)}
+.cconds{display:flex;flex-wrap:wrap;gap:6px;min-height:30px;align-items:center}
+.cacts{display:flex;flex-wrap:wrap;gap:8px;margin-top:12px}
+.tagab{display:inline-grid;place-items:center;width:24px;height:24px;border-radius:7px;font:800 12.5px var(--f-body);margin-right:9px;vertical-align:middle}
+.tagab.a{background:var(--acc-soft);color:var(--acc)}.tagab.b{background:rgba(242,194,107,.16);color:var(--warn)}
+.cpick{margin-bottom:14px;border-color:var(--acc)}
+.ctwrap{overflow-x:auto}
+.ctable{width:100%;max-width:760px;border-collapse:collapse;font-size:13.5px}
+.ctable th,.ctable td{padding:9px 12px;border-top:1px solid var(--line);text-align:right;white-space:nowrap}
+.ctable thead th{border-top:0;padding-top:0}
+.ctable td:first-child{text-align:left;color:var(--mut)}
+.ctable td.best{color:var(--win);font-weight:700}
+.cverd{margin-top:14px;font-size:14.5px;line-height:1.65;max-width:120ch}.cverd p{margin:0}
+@media (max-width:760px){
+ .frow{grid-template-columns:minmax(0,1fr)}.frow .fl{padding-top:0;flex-direction:row;gap:8px;align-items:baseline}.mdet{grid-column:1}
+ .mglegend,.mg{grid-template-columns:minmax(0,1fr) 78px;gap:6px 10px}
+ .mglegend > span:first-child,.mglegend > span:last-child{display:none}.mglegend .mgaxis{grid-column:1/-1}
+ .mgl{grid-column:1/-1}
+ .cmpgrid{grid-template-columns:minmax(0,1fr)}
+ .prow{grid-template-columns:minmax(0,1fr);gap:4px}.prow .pl{padding-top:0}
+ .fcount{margin-left:0}
+ .fbar .fper{flex-wrap:nowrap;overflow-x:auto;max-width:100%}
+ .fbar .fper button{white-space:nowrap}
+}
 input,select,textarea{width:100%;background:var(--surface2);border:1px solid var(--line);color:var(--fg);border-radius:12px;padding:10px 13px;font:14px var(--f-body);outline:none}
 input:focus,select:focus,textarea:focus{border-color:var(--acc)}
 textarea{resize:vertical;line-height:1.5}
@@ -348,21 +444,18 @@ details.more > summary{cursor:pointer;font:700 15px var(--f-display);padding:12p
    </div>
    <div class="acts">
     <span class="syncpill" data-s="local"><b></b><span class="synctxt"></span></span>
-    <button class="btn" id="fBtn">Filtri</button>
     <button class="btn pri newbtn" data-new>+ Nuovo trade</button>
    </div>
   </header>
   <div id="banner"></div>
 
-  <section class="filters card" id="filters" hidden>
-   <select id="fRes"><option value="">Tutti gli esiti</option><option value="win">Solo win</option><option value="loss">Solo loss</option><option value="be">Breakeven</option></select>
-   <input type="date" id="fFrom" aria-label="Dal"><input type="date" id="fTo" aria-label="Al">
-   <input type="time" id="fH1" aria-label="Dalle ore"><input type="time" id="fH2" aria-label="Alle ore">
-   <select id="fSetup"></select><select id="fSess"></select><select id="fEmo"></select><select id="fNews"></select><select id="fGrade"></select><select id="fVer"></select>
-   <select id="fDir"><option value="">Long e Short</option><option>Long</option><option>Short</option></select>
-   <select id="fMis"><option value="">Con e senza errori</option><option value="no">Senza errori</option><option value="si">Con errori</option></select>
-   <button class="btn sm" id="fReset">Azzera</button>
+  <section class="fbar" id="fbar" aria-label="Filtri">
+   <div class="seg fper" id="fPer"></div>
+   <span class="fdates" id="fDates" hidden><input type="date" id="fFrom" aria-label="Dal"><span class="mut">–</span><input type="date" id="fTo" aria-label="Al"></span>
+   <span class="fcount" id="fCount"></span>
+   <div class="fchips" id="fChips"></div>
   </section>
+  <div class="card fpanel" id="fPanel" hidden></div>
 
   <section class="page" id="p-dashboard">
    <div id="dayBox"></div>
@@ -411,6 +504,9 @@ details.more > summary{cursor:pointer;font:700 15px var(--f-display);padding:12p
   </section>
 
   <section class="page" id="p-report" hidden>
+   <div class="rtabs"><div class="seg" id="rTabs"><button data-rt="a">Analisi</button><button data-rt="c">Confronto</button></div></div>
+   <div id="rCmp" hidden></div>
+   <div id="rAnal">
    <div id="verdicts"></div>
    <h2 style="font:700 17px var(--f-display);margin:22px 0 10px">Strumenti</h2>
    <div class="card" style="margin-bottom:14px"><h3>Mese per mese</h3><div style="overflow-x:auto" id="monthly"></div></div>
@@ -428,6 +524,7 @@ details.more > summary{cursor:pointer;font:700 15px var(--f-display);padding:12p
    <div class="grid cards3" id="reports"></div>
    <div class="card" style="margin-top:14px"><h3>Distribuzione dei risultati in R</h3><div class="chartbox" style="height:240px"><canvas id="cR"></canvas></div></div>
    </details>
+   </div>
   </section>
 
   <section class="page" id="p-insights" hidden><div id="tips"></div></section>
@@ -772,23 +869,87 @@ function go(p,push=true){if(!PAGES[p])p='dashboard';S.page=p;
  $$('.page').forEach(x=>x.hidden=x.id!=='p-'+p);
  $$('[data-p]').forEach(b=>b.classList.toggle('on',b.dataset.p===p));
  $('pageTitle').textContent=PAGES[p];$('more').hidden=true;
- $('fBtn').hidden=!['dashboard','trade','report','insights'].includes(p);
+ $('fbar').hidden=!['dashboard','trade','report','insights'].includes(p);S.fpanel=null;
  if(p==='impostazioni')fillSettings();
  if(push&&location.hash!=='#'+p){try{history.replaceState(null,'','#'+p)}catch(e){location.hash=p}}
  render();window.scrollTo(0,0)}
-function setMode(m){S.mode=m;lsSet('ej3_mode',m);fillSettings();resetFilters(false);render()}
+function setMode(m){S.mode=m;lsSet('ej3_mode',m);fillSettings();S.F=loadF();S.fpanel=null;S.mapSel=null;S.mgSel=null;render()}
 
-/* ---------- filtri ---------- */
-const FIDS=['fRes','fFrom','fTo','fH1','fH2','fSetup','fSess','fEmo','fNews','fGrade','fVer','fDir','fMis'];
-function resetFilters(r=true){FIDS.forEach(i=>$(i).value='');if(r)render()}
-function fill(id,vals,all){const el=$(id),v=el.value;el.innerHTML=`<option value="">${all}</option>`+vals.map(x=>`<option>${esc(x)}</option>`).join('');el.value=vals.includes(v)?v:''}
-function applyF(list){const v=i=>$(i).value;return list.filter(t=>!(
- (v('fRes')==='win'&&!(t.pnl>0))||(v('fRes')==='loss'&&!(t.pnl<0))||(v('fRes')==='be'&&t.pnl!==0)||
- (v('fFrom')&&t.date<v('fFrom'))||(v('fTo')&&t.date>v('fTo'))||
- (v('fH1')&&(!t.time||t.time<v('fH1')))||(v('fH2')&&(!t.time||t.time>v('fH2')))||
- (v('fSetup')&&!setupsOf(t).includes(v('fSetup')))||(v('fSess')&&t.sess!==v('fSess'))||(v('fEmo')&&t.emo!==v('fEmo'))||
- (v('fNews')&&t.news!==v('fNews'))||(v('fGrade')&&t.grade!==v('fGrade'))||(v('fVer')&&t.version!==v('fVer'))||
- (v('fDir')&&t.dir!==v('fDir'))||(v('fMis')==='no'&&(t.mis||[]).length)||(v('fMis')==='si'&&!(t.mis||[]).length)))}
+/* ---------- filtri (v1.5) ---------- */
+const DAYSL=['Domenica','Lunedì','Martedì','Mercoledì','Giovedì','Venerdì','Sabato'];
+const gridV=t=>t.gridTot?(t.gridScore>=8?'8 su 8':t.gridScore===7?'7 su 8':t.gridOk?'6 su 8':'Sotto la soglia'):null;
+const rulesV=t=>{const set=t.rulesSet||[];if(!set.length)return null;return set.every(r=>(t.rules||[]).includes(r))&&t.autoRiskOk!==false&&t.autoStopOk!==false?'Tutte rispettate':'Almeno una saltata'};
+const chkV=t=>{if(t.mode==='bt'||!t.date)return null;const c=S.docs[dayId(t.date)];return c&&c.type==='day'?(c.ok?'Giorno conforme':'Giorno non conforme'):'Check non fatto'};
+const FG=['Quando','Setup','Esecuzione','Testa','Risultato','Versione'];
+function FACT(){const s=settings();return[
+ {id:'day',g:'Quando',l:'Giorno',fn:t=>t.date?DAYSL[new Date(t.date+'T12:00').getDay()]:null,opts:['Lunedì','Martedì','Mercoledì','Giovedì','Venerdì']},
+ {id:'sess',g:'Quando',l:'Sessione',fn:t=>t.sess||null,opts:['Asia','Londra','Overlap Londra-NY','New York']},
+ {id:'hour',g:'Quando',l:'Ora di entrata',fn:t=>t.time?t.time.slice(0,2)+':00':null,opts:null},
+ {id:'grid',g:'Setup',l:'Griglia',fn:gridV,opts:['8 su 8','7 su 8','6 su 8','Sotto la soglia']},
+ {id:'setup',g:'Setup',l:'Conferme e pattern',fn:t=>setupsOf(t).length?setupsOf(t):null,opts:lines(s.setups)},
+ {id:'ttype',g:'Setup',l:'Tipo di target',fn:t=>{const a=[...new Set((t.targets||[]).map(x=>x.type).filter(Boolean))];return a.length?a:null},opts:null},
+ {id:'entry',g:'Setup',l:'Ingresso',fn:t=>t.entryType||null,opts:ENTRY},
+ {id:'dir',g:'Setup',l:'Direzione',fn:t=>t.dir||null,opts:['Long','Short']},
+ {id:'rules',g:'Esecuzione',l:'Regole',fn:rulesV,opts:['Tutte rispettate','Almeno una saltata']},
+ {id:'mis',g:'Esecuzione',l:'Errori',fn:t=>(t.mis||[]).length?t.mis:['Nessun errore'],opts:['Nessun errore',...MIS]},
+ {id:'grade',g:'Esecuzione',l:'Voto',fn:t=>t.grade||null,opts:GRADE},
+ {id:'chk',g:'Testa',l:'Check pre-sessione',fn:chkV,opts:S.mode==='bt'?[]:['Giorno conforme','Giorno non conforme','Check non fatto']},
+ {id:'emo',g:'Testa',l:'Emozione',fn:t=>t.emo||null,opts:EMO},
+ {id:'news',g:'Testa',l:'News',fn:t=>t.news||null,opts:NEWS},
+ {id:'res',g:'Risultato',l:'Esito',fn:t=>t.pnl>0?'Win':t.pnl<0?'Loss':'Breakeven',opts:['Win','Loss','Breakeven']},
+ {id:'ver',g:'Versione',l:'Versione',fn:t=>t.version||null,opts:null}]}
+function factOpts(f,all){const seen=new Set();all.forEach(t=>{const v=f.fn(t);if(v!=null)[].concat(v).forEach(x=>seen.add(x))});const base=f.opts||[];return[...base,...[...seen].filter(x=>!base.includes(x)).sort()]}
+const FKEY=()=>'ej5_f_'+S.mode;
+function loadF(){try{const f=JSON.parse(lsGet(FKEY())||'null');if(f&&typeof f==='object')return{period:f.period||'all',from:f.from||'',to:f.to||'',c:f.c||{}}}catch(e){}return{period:'all',from:'',to:'',c:{}}}
+S.F=loadF();S.fpanel=null;S.rtab=lsGet('ej5_rtab')==='c'?'c':'a';S.mapSel=null;S.mgSel=null;
+function saveF(){lsSet(FKEY(),JSON.stringify(S.F))}
+function setF(fn){fn(S.F);saveF();render()}
+function perRange(F=S.F){const t=new Date();t.setHours(12,0,0,0);
+ if(F.period==='week'){const d=new Date(t);d.setDate(d.getDate()-((d.getDay()+6)%7));return[ymd(d),'']}
+ if(F.period==='month')return[ymd(t).slice(0,8)+'01',''];
+ if(F.period==='3m'){const d=new Date(t);d.setMonth(d.getMonth()-3);return[ymd(d),'']}
+ if(F.period==='custom')return[F.from||'',F.to||''];return['','']}
+function matchC(t,c,facts){for(const f of facts){const sel=c[f.id];if(!sel||!sel.length)continue;const v=f.fn(t);if(v==null||![].concat(v).some(x=>sel.includes(x)))return false}return true}
+function applyF(list,F=S.F){const [a,b]=perRange(F),facts=FACT();return list.filter(t=>(!a||(t.date||'')>=a)&&(!b||(t.date||'')<=b)&&matchC(t,F.c,facts))}
+const nActive=(F=S.F)=>Object.values(F.c).filter(v=>v&&v.length).length+(F.period!=='all'?1:0);
+const PER=[['week','Questa settimana'],['month','Questo mese'],['3m','Ultimi 3 mesi'],['all','Tutto'],['custom','Date…']];
+const savedF=()=>(S.docs.flt_saved&&S.docs.flt_saved.list)||[];
+function pickerHTML(c,scope,all){const facts=FACT();return`<div class="pgs">${FG.map(g=>{const rows=facts.filter(f=>f.g===g).map(f=>{const o=factOpts(f,all);if(!o.length)return'';const sel=c[f.id]||[];
+  return`<div class="prow"><span class="pl">${f.l}</span><span class="chips">${o.map(x=>`<span class="chip ${sel.includes(x)?'on':''}" role="button" tabindex="0" data-pk="${scope}" data-pf="${f.id}" data-pv="${esc(x)}">${esc(x)}</span>`).join('')}</span></div>`}).join('');
+  return rows?`<div class="pg"><div class="pgh">${g}</div>${rows}</div>`:''}).join('')}</div>`}
+function condChips(c,rmScope){return FACT().filter(f=>(c[f.id]||[]).length).map(f=>{const v=c[f.id].join(', ');return`<span class="fchip" title="${esc(f.l+': '+v)}"><span class="fk">${f.l}:</span><span class="fv">${esc(v)}</span><button data-frm="${rmScope}|${f.id}" aria-label="Togli ${esc(f.l)}">×</button></span>`}).join('')}
+function renderFbar(n,all){const F=S.F;
+ $('fPer').innerHTML=PER.map(([k,l])=>`<button data-per="${k}" class="${F.period===k?'on':''}">${l}</button>`).join('');
+ $('fDates').hidden=F.period!=='custom';
+ if(document.activeElement!==$('fFrom'))$('fFrom').value=F.from||'';if(document.activeElement!==$('fTo'))$('fTo').value=F.to||'';
+ $('fChips').innerHTML=condChips(F.c,'F')+`<button class="btn sm${S.fpanel==='add'?' on':''}" data-fadd>+ Aggiungi filtro</button><button class="btn sm ghost${S.fpanel==='saved'?' on':''}" data-fsaved>Filtri salvati${savedF().length?` (${savedF().length})`:''}</button>${nActive()?'<button class="btn sm ghost" data-fclear>Azzera</button>':''}`;
+ $('fCount').textContent=n===1?'1 trade':n+' trade';
+ const p=$('fPanel');p.hidden=!S.fpanel||$('fbar').hidden;if(p.hidden){p.innerHTML='';return}
+ if(S.fpanel==='add')p.innerHTML=`<h3><span>Aggiungi filtro <small>tocca per attivare o togliere · più valori dello stesso filtro valgono come "oppure"</small></span><button class="btn sm" data-fpclose>Fatto</button></h3>${pickerHTML(F.c,'F',all)}`;
+ else{const L=savedF();p.innerHTML=`<h3><span>Filtri salvati <small>sincronizzati su tutti i tuoi dispositivi</small></span><button class="btn sm" data-fpclose>Chiudi</button></h3>
+  <div class="svlist">${L.length?L.map((x,i)=>`<span class="svitem"><button class="svload" data-fload="${i}" title="${esc(x.name)}">${esc(x.name)}</button><button class="svdel" data-fdel="${i}" aria-label="Elimina ${esc(x.name)}">×</button></span>`).join(''):'<span class="hint">Nessun filtro salvato. Imposta i filtri che usi spesso e dagli un nome qui sotto.</span>'}</div>
+  <div class="svnew"><input id="fSaveName" maxlength="40" placeholder="Nome, es. Setup validi"><button class="btn sm pri" data-fsave ${nActive()?'':'disabled'}>Salva i filtri attuali</button></div>`}}
+function clickFilters(t){
+ const pb=t.closest('[data-per]');if(pb){setF(F=>{F.period=pb.dataset.per;if(F.period==='custom'&&!F.from&&!F.to){const d=new Date();F.to=ymd(d);d.setDate(d.getDate()-30);F.from=ymd(d)}});return true}
+ const rm=t.closest('[data-frm]');if(rm){const [sc,id]=rm.dataset.frm.split('|');if(sc==='F')setF(F=>{delete F.c[id]});else{delete CMP()[sc].c[id];saveCmp();render()}return true}
+ if(t.closest('[data-fadd]')){S.fpanel=S.fpanel==='add'?null:'add';render();return true}
+ if(t.closest('[data-fsaved]')){S.fpanel=S.fpanel==='saved'?null:'saved';render();return true}
+ if(t.closest('[data-fpclose]')){S.fpanel=null;render();return true}
+ if(t.closest('[data-fclear]')){setF(F=>{F.period='all';F.from='';F.to='';F.c={}});return true}
+ const pk=t.closest('[data-pk]');if(pk){const sc=pk.dataset.pk,c=sc==='F'?S.F.c:CMP()[sc].c,f=pk.dataset.pf,v=pk.dataset.pv,a=c[f]||[];c[f]=a.includes(v)?a.filter(x=>x!==v):[...a,v];if(!c[f].length)delete c[f];
+  if(sc==='F')saveF();else saveCmp();render();return true}
+ const fl=t.closest('[data-fload]');if(fl){const x=savedF()[+fl.dataset.fload];if(x){S.F=JSON.parse(JSON.stringify(x.F));if(!S.F.c)S.F.c={};saveF();S.fpanel=null;render();toast('Filtro "'+x.name+'" applicato')}return true}
+ const fd=t.closest('[data-fdel]');if(fd){twoStep(fd,'Elimina?',()=>{const L=savedF().slice();L.splice(+fd.dataset.fdel,1);put('flt_saved',{type:'filters',list:L,updated:Date.now()})});return true}
+ if(t.closest('[data-fsave]')){const name=($('fSaveName').value||'').trim();if(!name){toast('Dai un nome al filtro',1);$('fSaveName').focus();return true}
+  const L=savedF().filter(x=>x.name!==name);L.push({name,F:JSON.parse(JSON.stringify(S.F))});put('flt_saved',{type:'filters',list:L,updated:Date.now()});toast('Filtro salvato');return true}
+ const rt=t.closest('[data-rt]');if(rt){S.rtab=rt.dataset.rt;lsSet('ej5_rtab',S.rtab);render();return true}
+ const mp=t.closest('[data-mf]');if(mp){const k=mp.dataset.mf+'|'+mp.dataset.mv;S.mapSel=S.mapSel===k?null:k;render();return true}
+ const see=t.closest('[data-see]');if(see){const [f,...v]=see.dataset.see.split('|');setF(F=>{F.c[f]=[v.join('|')]});S.statusF='closed';go('trade');return true}
+ const mg=t.closest('[data-mg]');if(mg){S.mgSel=S.mgSel===mg.dataset.mg?null:mg.dataset.mg;render();return true}
+ const cp=t.closest('[data-cpick]');if(cp){const C=CMP();C.open=C.open===cp.dataset.cpick?null:cp.dataset.cpick;render();return true}
+ if(t.closest('[data-crest]')){const C=CMP();C.B.rest=!C.B.rest;if(C.B.rest&&C.open==='B')C.open=null;saveCmp();render();return true}
+ if(t.closest('[data-cswap]')){const C=CMP();if(C.B.rest)return true;[C.A,C.B]=[C.B,C.A];saveCmp();render();return true}
+ return false}
 const sortT=a=>a.sort((x,y)=>(x.in||'').localeCompare(y.in||''));
 
 /* ---------- statistiche ---------- */
@@ -822,11 +983,8 @@ function render(){
  $$('.modesw button').forEach(b=>b.classList.toggle('on',b.dataset.m===S.mode));
  const mt=$('mtag');mt.dataset.m=S.mode;mt.textContent=S.mode==='live'?'LIVE':'BACKTEST';
  $('drawer').style.borderTop='3px solid var('+(S.mode==='live'?'--win':'--blue')+')';
- fill('fSetup',lines(s.setups),'Tutti i setup');fill('fSess',['Asia','Londra','Overlap Londra-NY','New York'],'Tutte le sessioni');fill('fEmo',EMO,'Tutte le emozioni');
- fill('fNews',NEWS,'News: tutte');fill('fGrade',GRADE,'Voto: tutti');fill('fVer',[...new Set(all.map(t=>t.version).filter(Boolean))],'Tutte le versioni');
  $('dlSym').innerHTML=[...new Set([...instruments(s).map(i=>i.sym),...all.map(t=>t.sym)])].map(x=>`<option value="${esc(x)}">`).join('');
- const st=stats(closed,s),nf=FIDS.filter(i=>$(i).value).length;
- $('fBtn').textContent=nf?`Filtri (${nf})`:'Filtri';
+ const st=stats(closed,s),nf=nActive();renderFbar(closed.length,all.filter(t=>t.status==='closed'||!t.status));
  $('pageSub').textContent=`${S.mode==='live'?'Conto live':'Backtest'} · ${closed.length} trade chiusi${nf?' (filtrati)':''} · saldo ${money(st.bal,s)}`;
  if(S.page==='dashboard')renderDash(closed,st,s,all);
  if(S.page==='trade')renderList(all,s);
@@ -941,77 +1099,123 @@ function altR(t){const g=legsOf(t),fin=g.tps[g.tps.length-1];if(!fin||!t.after||
 function vcard(title,kind,label,n,text,detail){return`<div class="vcard"><div class="vt"><b>${title}</b><span class="vpills"><span class="vp ${kind}">${label}</span>${n?`<span class="vp rel">${relOf(n)}</span>`:''}</span></div><p>${text}</p>${detail?`<details><summary>Dettagli</summary>${detail}</details>`:''}</div>`}
 const fewCard=(title,text)=>vcard(title,'none','Pochi dati',0,text);
 function sec(title,sub,body){return`<div class="vsec"><h2>${title}</h2>${sub?`<p class="hint">${sub}</p>`:''}${body}</div>`}
-function dims(s){const BAD=['Ansioso','Paura','Avidità','FOMO','Revenge','Frustrato','Euforico','Stanco'];return[
- ['Conferma',t=>setupsOf(t).length?setupsOf(t):null],
- ['Griglia',t=>t.gridTot?(t.gridScore>=8?'8 su 8':t.gridScore===7?'7 su 8':t.gridOk?'6 su 8':'sotto la soglia'):null],
- ['Sessione',t=>t.sess||null],
- ['Giorno',t=>t.date?['Domenica','Lunedì','Martedì','Mercoledì','Giovedì','Venerdì','Sabato'][new Date(t.date+'T12:00').getDay()]:null],
- ['News',t=>t.news?(t.news==='Nessuna'?'Giorni senza news':'Giorni di news'):null],
- ['Direzione',t=>t.dir||null],
- ['Ingresso',t=>t.entryType||null],
- ['Direzione e sessione',t=>t.dir&&t.sess?t.dir+' a '+t.sess:null],
- ['Emozione',t=>t.emo?(BAD.includes(t.emo)?'Emozioni negative':'Emozioni neutre o positive'):null]]}
-function groups(d){const out=[];dims().forEach(([dim,fn])=>{const g={};d.forEach(t=>{const k=fn(t);if(k==null)return;[].concat(k).forEach(x=>(g[x]=g[x]||[]).push(t))});
- Object.entries(g).forEach(([k,a])=>{const rs=a.map(t=>t.r).filter(x=>x!=null);if(rs.length>=3)out.push({dim,k,n:rs.length,avg:avgOf(rs),wr:a.filter(t=>t.pnl>0).length/a.length*100})})});return out}
 const strength=x=>Math.abs(x)>=0.7?'molto':Math.abs(x)>=0.3?'nettamente':'un po\'';
-function renderVerdicts(d,s,all){const rs=d.map(t=>t.r).filter(x=>x!=null),n=rs.length,overall=avgOf(rs)||0,st=stats(d,s);let html='';
- const det=(n,avg,extra='')=>`Su ${n} trade · risultato medio ${fR(avg)}${extra}`;
- // 1 edge
- let edge;if(n<5)edge=fewCard('Il metodo ha un vantaggio?','Servono almeno 5 trade chiusi per un primo giudizio. Continua a registrare, anche in backtest.');
- else{const wrW=st.wr<45?'vinci meno della metà delle volte':st.wr<=55?'vinci circa una volta su due':'vinci più della metà delle volte';const pw=!st.ratio?'':st.ratio>=1.8?'le vincite sono molto più grandi delle perdite':st.ratio>=1.1?'le vincite sono più grandi delle perdite':st.ratio>=0.9?'vincite e perdite si equivalgono':'le perdite sono più grandi delle vincite';
-  const k=overall>0.1?'good':overall<-0.1?'bad':'neutral',l=overall>0.1?'Sì':overall<-0.1?'Non ancora':'In pari';
-  edge=vcard('Il metodo ha un vantaggio?',k,l,n,`${wrW[0].toUpperCase()+wrW.slice(1)}${pw?' e '+pw:''}. ${overall>0.1?'Nel complesso il metodo guadagna.':overall<-0.1?'Nel complesso per ora perde: guarda cosa evitare qui sotto.':'Nel complesso per ora sei in pari.'}`,det(n,overall,` · win rate ${st.wr.toFixed(0)}%`))}
- html+=sec('Il tuo vantaggio','',`<div class="vgrid">${edge}</div>`);
- // 2-3 do more / avoid
- const G=groups(d),pos=G.filter(g=>g.avg>0&&g.avg-overall>=0.15).sort((a,b)=>(b.avg-overall)*Math.sqrt(b.n)-(a.avg-overall)*Math.sqrt(a.n)).slice(0,4);
- const neg=G.filter(g=>g.avg<0).sort((a,b)=>a.avg*Math.sqrt(a.n)-b.avg*Math.sqrt(b.n)).slice(0,4);
- html+=sec('Cosa fare di più','Le condizioni in cui rendi meglio del tuo solito.',pos.length?`<div class="vgrid">${pos.map(g=>vcard(`${g.dim}: ${esc(g.k)}`,'good','Funziona',g.n,`Qui rendi ${strength(g.avg-overall)} meglio della tua media.`,det(g.n,g.avg))).join('')}</div>`:`<div class="vgrid">${fewCard('Ancora nessuna condizione chiara','Servono almeno 3 trade nella stessa condizione per confrontarla con il resto.')}</div>`);
- const withE=d.filter(t=>(t.mis||[]).length&&t.r!=null),noE=d.filter(t=>!(t.mis||[]).length&&t.r!=null);let errCard='';
- if(withE.length>=2&&noE.length>=2){const a=avgOf(noE.map(t=>t.r)),b=avgOf(withE.map(t=>t.r)),mc={};withE.forEach(t=>t.mis.forEach(m=>{mc[m]=(mc[m]||0)+(t.r||0)}));const worst=Object.entries(mc).sort((x,y)=>x[1]-y[1])[0];
-  errCard=vcard('Il costo degli errori',b<a?'bad':'neutral',b<a?'Ti costano':'Per ora no',withE.length,b<a?`Senza errori il tuo metodo renderebbe ${strength(a-b)} di più.${worst&&worst[1]<0?` L'errore che pesa di più: <b>${esc(worst[0].toLowerCase())}</b>.`:''}`:'I trade con errori per ora non vanno peggio degli altri.',`Senza errori: ${fR(a)} a trade · con errori: ${fR(b)} a trade`)}
- html+=sec('Cosa evitare','Le condizioni in cui perdi, e quanto ti costano gli errori.',`<div class="vgrid">${neg.map(g=>vcard(`${g.dim}: ${esc(g.k)}`,'bad','Non funziona',g.n,'Qui sei in perdita: valuta di evitarla o di ridurre il rischio.',det(g.n,g.avg))).join('')}${errCard}${!neg.length&&!errCard?fewCard('Ancora nessuna condizione negativa chiara','Comparirà quando avrai almeno 3 trade in perdita nella stessa condizione.'):''}</div>`);
- // 4 management
- const M=[];
- const cmp=(title,list,good,bad,neutral)=>{const v=list.map(t=>({t,a:realR(t),b:altR(t)})).filter(x=>x.a!=null&&x.b!=null);if(v.length<2)return fewCard(title,'Rispondi alla domanda "dopo la tua uscita" nei trade chiusi così: dopo qualche trade arriva il verdetto.');
-  const diff=avgOf(v.map(x=>x.a-x.b));return vcard(title,diff>0.1?'good':diff<-0.1?'bad':'neutral',diff>0.1?'Ti aiuta':diff<-0.1?'Ti costa':'Indifferente',v.length,diff>0.1?good:diff<-0.1?bad:neutral,`Con la tua scelta: ${fR(avgOf(v.map(x=>x.a)))} a trade · senza: ${fR(avgOf(v.map(x=>x.b)))} a trade`)};
- M.push(cmp('Breakeven dopo il TP1',d.filter(t=>t.exitType==='Breakeven'),'Spostare lo stop in pari ti protegge: senza, avresti restituito più di quanto hai lasciato sul tavolo.','Il breakeven ti fa uscire da trade che poi arrivano al TP finale: valuta un margine oltre l\'entrata o di spostarlo più tardi.','Breakeven o no, il risultato è simile.'));
- M.push(cmp('Chiusure manuali e trailing',d.filter(t=>t.exitType==='Chiusura manuale'||t.exitType==='Trailing stop'),'Quando chiudi a mano o con il trailing, fai meglio che lasciando correre fino a TP o stop.','Chiudendo a mano o con il trailing esci troppo presto: lasciare correre fino a TP o stop renderebbe di più.','Chiudere a mano o lasciar correre dà risultati simili.'));
- {const pt=d.filter(t=>{const g=legsOf(t);return g.tps.length>=2&&(g.tps[0].pct||0)>0&&(g.tps[0].pct||0)<100&&g.tps[g.tps.length-1].st&&g.tps[g.tps.length-1].st!=='wait'});
-  const v=pt.map(t=>{const g=legsOf(t),fin=g.tps[g.tps.length-1],a=realR(t),full=fin.st==='hit'?legR(t,fin.p):legR(t,t.exit);return{a,full}}).filter(x=>x.a!=null&&x.full!=null);
-  if(v.length<2)M.push(fewCard('Parziali o tenere tutto?','Per confrontarli segna "Preso" o "Mancato" anche sull\'ultimo TP dei trade con parziali.'));
-  else{const diff=avgOf(v.map(x=>x.a-x.full));M.push(vcard('Parziali o tenere tutto?',diff>0.1?'good':diff<-0.1?'bad':'neutral',diff>0.1?'Parziali meglio':diff<-0.1?'Tenere tutto meglio':'Simili',v.length,diff>0.1?'Prendere parziali ti rende di più che tenere tutta la posizione fino al TP finale.':diff<-0.1?'Tenendo tutta la posizione fino al TP finale avresti fatto di più: forse parzializzi troppo o troppo presto.':'Con o senza parziali il risultato è simile: puoi scegliere quello che ti fa gestire meglio il trade.',`Con i parziali: ${fR(avgOf(v.map(x=>x.a)))} · tutto al TP finale: ${fR(avgOf(v.map(x=>x.full)))}`))}}
+/* ---------- report unificato (v1.5) ---------- */
+const MAPF=['sess','day','grid','setup','ttype','entry','dir','news','chk','emo'];
+const lc1=x=>/^.[A-Z]/.test(x)?x:x.charAt(0).toLowerCase()+x.slice(1);
+const relPill=n=>`<span class="vp rel">${relOf(n)}</span>`;
+function phr(f,v){const lo=v.toLowerCase();switch(f){
+ case'sess':return v==='Overlap Londra-NY'?"nell'overlap Londra-NY":v==='Asia'?'in Asia':'a '+v;
+ case'day':return(v==='Domenica'?'la ':'il ')+lo;
+ case'grid':return v==='Sotto la soglia'?'con la griglia sotto la soglia':'con griglia '+v;
+ case'setup':return'con '+v;case'ttype':return'con target '+lo;case'entry':return'entrando '+lo;case'dir':return'in '+v;
+ case'news':return v==='Nessuna'?'nei giorni senza news':'nei giorni di '+v;
+ case'chk':return v==='Giorno conforme'?'nei giorni conformi al check':v==='Giorno non conforme'?'nei giorni non conformi al check':'nei giorni senza check';
+ case'emo':return'quando ti senti '+lo;default:return lo}}
+function mapData(d){const facts=FACT().filter(f=>MAPF.includes(f.id)).sort((a,b)=>MAPF.indexOf(a.id)-MAPF.indexOf(b.id)),ov=avgOf(d.map(t=>t.r).filter(x=>x!=null))||0;
+ let tn=0,th=0;d.forEach(t=>(t.targets||[]).forEach(x=>{if(x.type&&x.st&&x.st!=='wait'){tn++;if(x.st==='hit')th++}}));const ovH=tn?th/tn:0;
+ return{ov,ovH,rows:facts.map(f=>{const items=[];
+  if(f.id==='ttype'){const g={};d.forEach(t=>(t.targets||[]).forEach(x=>{if(!x.type||!x.st||x.st==='wait')return;const o=g[x.type]=g[x.type]||{n:0,h:0,r:[]};o.n++;if(x.st==='hit')o.h++;const r=legR(t,x.p);if(r!=null)o.r.push(r)}));
+   Object.entries(g).forEach(([v,o])=>{const hr=o.h/o.n,dl=hr-ovH;items.push({v,n:o.n,hr,h:o.h,dr:med(o.r),delta:dl,kind:o.n<3?'few':dl>=0.1?'good':dl<=-0.1?'bad':'neutral'})})}
+  else{const g={};d.forEach(t=>{const v=f.fn(t);if(v==null)return;[].concat(v).forEach(x=>(g[x]=g[x]||[]).push(t))});
+   Object.entries(g).forEach(([v,a])=>{const rs=a.map(t=>t.r).filter(x=>x!=null);if(!rs.length)return;const avg=avgOf(rs),dl=avg-ov;
+    items.push({v,n:rs.length,avg,tot:rs.reduce((x,y)=>x+y,0),wr:a.filter(t=>t.pnl>0).length/a.length*100,delta:dl,kind:rs.length<3?'few':dl>=0.15?'good':dl<=-0.15?'bad':'neutral'})})}
+  const ord=f.opts||[];items.sort((a,b)=>{const ia=ord.indexOf(a.v),ib=ord.indexOf(b.v);return(ia<0?99:ia)-(ib<0?99:ib)||b.n-a.n||a.v.localeCompare(b.v)});return{f,items}})}}
+function mapHTML(M){const rows=M.rows.filter(r=>r.items.length);if(!rows.length)return'<p class="empty">Ancora nessun dato: compila sessione, griglia, conferme e target nei trade chiusi.</p>';
+ return rows.map(({f,items})=>{const selIt=items.find(i=>S.mapSel===f.id+'|'+i.v);
+  const pills=items.map(i=>`<button class="mp ${i.kind} ${i.n>=10?'':i.n>=3?'l2':''} ${selIt===i?'sel':''}" data-mf="${f.id}" data-mv="${esc(i.v)}" title="${esc(i.v)}"><span class="mv">${esc(i.v)}</span><small>${f.id==='ttype'?Math.round(i.hr*100)+'%':fR(i.avg)} · ${i.n}</small></button>`).join('');
+  let det='';if(selIt){const i=selIt,few=i.n<3;
+   const txt=f.id==='ttype'?`<b>${esc(i.v)}</b>: raggiunto ${i.h} volte su ${i.n} (${Math.round(i.hr*100)}%)${i.dr!=null?`, a una distanza tipica di ${fR(i.dr)}`:''}. In media i tuoi target vengono raggiunti il ${Math.round(M.ovH*100)}% delle volte: ${few?'servono almeno 3 target di questo tipo per un giudizio.':i.kind==='good'?'questo tipo è più affidabile del solito.':i.kind==='bad'?'questo tipo viene raggiunto meno del solito.':'questo tipo è in linea con gli altri.'}`
+    :`<b>${esc(i.v)}</b>: ${i.n} trade · win rate ${i.wr.toFixed(0)}% · risultato medio ${fR(i.avg)} · totale ${fR(i.tot)}. ${few?'Troppo pochi trade per dire se qui rendi meglio o peggio.':`Rispetto alla tua media (${fR(M.ov)}) ${phr(f.id,i.v)} ${i.kind==='good'?'rendi '+strength(i.delta)+' meglio':i.kind==='bad'?'rendi '+strength(i.delta)+' peggio':'rendi in linea con il solito'}.`}`;
+   det=`<div class="mdet"><p>${txt}</p><div class="mdact">${few?'<span class="vp none">Pochi dati</span>':relPill(i.n)}<button class="btn sm" data-see="${f.id}|${esc(i.v)}">Vedi questi trade →</button></div></div>`}
+  return`<div class="frow"><span class="fl">${f.l}${f.id==='ttype'?'<small>quante volte viene raggiunto</small>':''}</span><div class="mps">${pills}</div>${det}</div>`}).join('')}
+function mgmtData(d,s){const R=[],diffRow=(key,label,v,thr,txt,numbers)=>{if(!v||v.n<2){R.push({key,label,few:true,hint:txt.few});return}
+  const df=v.diff,kind=df>thr?'good':df<-thr?'bad':'neutral';R.push({key,label,kind,side:df>=0?'R':'L',mag:Math.min(1,Math.abs(df)),val:fR(df),n:v.n,text:kind==='good'?txt.good:kind==='bad'?txt.bad:txt.neutral,numbers})};
+ const pairs=(a,b)=>a.length>=2&&b.length>=2?{diff:avgOf(a)-avgOf(b),n:Math.min(a.length,b.length),a:avgOf(a),b:avgOf(b)}:null;
+ // gestione
+ const alt=list=>{const v=list.map(t=>({a:realR(t),b:altR(t)})).filter(x=>x.a!=null&&x.b!=null);return v.length?{diff:avgOf(v.map(x=>x.a-x.b)),n:v.length,a:avgOf(v.map(x=>x.a)),b:avgOf(v.map(x=>x.b))}:null};
+ const FEWAFTER='Rispondi alla domanda "dopo la tua uscita" nei trade chiusi: dopo qualche trade arriva il verdetto.';
+ {const v=alt(d.filter(t=>t.exitType==='Breakeven'));diffRow('be','Breakeven dopo il TP1',v,0.1,{few:FEWAFTER,good:'Spostare lo stop in pari ti protegge: senza, avresti restituito più di quanto hai lasciato sul tavolo.',bad:'Il breakeven ti fa uscire da trade che poi arrivano al TP finale: valuta un margine oltre l\'entrata o di spostarlo più tardi.',neutral:'Breakeven o no, il risultato è simile.'},v&&`Con il breakeven: ${fR(v.a)} a trade · senza: ${fR(v.b)} a trade`)}
+ {const v=alt(d.filter(t=>t.exitType==='Chiusura manuale'||t.exitType==='Trailing stop'));diffRow('man','Chiusure manuali e trailing',v,0.1,{few:FEWAFTER,good:'Quando chiudi a mano o con il trailing fai meglio che lasciando correre fino a TP o stop.',bad:'Chiudendo a mano o con il trailing esci troppo presto: lasciare correre fino a TP o stop renderebbe di più.',neutral:'Chiudere a mano o lasciar correre dà risultati simili.'},v&&`Con la tua chiusura: ${fR(v.a)} a trade · lasciando correre: ${fR(v.b)} a trade`)}
+ {const v=d.filter(t=>{const g=legsOf(t);return g.tps.length>=2&&(g.tps[0].pct||0)>0&&(g.tps[0].pct||0)<100&&g.tps[g.tps.length-1].st&&g.tps[g.tps.length-1].st!=='wait'}).map(t=>{const g=legsOf(t),fin=g.tps[g.tps.length-1];return{a:realR(t),f:fin.st==='hit'?legR(t,fin.p):legR(t,t.exit)}}).filter(x=>x.a!=null&&x.f!=null);
+  const o=v.length?{diff:avgOf(v.map(x=>x.a-x.f)),n:v.length,a:avgOf(v.map(x=>x.a)),b:avgOf(v.map(x=>x.f))}:null;
+  diffRow('part','Parziali invece di tenere tutto',o,0.1,{few:'Per confrontarli segna "Preso" o "Mancato" anche sull\'ultimo TP dei trade con parziali.',good:'Prendere parziali ti rende di più che tenere tutta la posizione fino al TP finale.',bad:'Tenendo tutta la posizione fino al TP finale avresti fatto di più: forse parzializzi troppo o troppo presto.',neutral:'Con o senza parziali il risultato è simile: scegli quello che ti fa gestire meglio il trade.'},o&&`Con i parziali: ${fR(o.a)} · tutto al TP finale: ${fR(o.b)}`)}
  {const sl=d.filter(t=>t.exitType==='Stop loss'&&t.after),y=sl.filter(t=>t.after==='tp').length;
-  M.push(sl.length<3?fewCard('Lo stop è troppo stretto?','Nei trade chiusi a stop rispondi "dopo lo stop è arrivato al TP?": così capiamo se lo stop ti toglie da trade buoni.'):vcard('Lo stop è troppo stretto?',y/sl.length>=0.4?'bad':y/sl.length>=0.2?'neutral':'good',y/sl.length>=0.4?'Spesso':y/sl.length>=0.2?'A volte':'Raramente',sl.length,y/sl.length>=0.4?'Molti trade chiusi a stop poi arrivano al target: lo stop è spesso nel rumore. Valuta un margine oltre il livello, o di entrare dopo la presa di liquidità.':y/sl.length>=0.2?'Ogni tanto lo stop ti toglie da un trade che poi va a target: è normale, tienilo d\'occhio.':'Quando vieni stoppato, di solito l\'idea era davvero sbagliata: lo stop fa il suo lavoro.',`${y} trade su ${sl.length} chiusi a stop sono poi arrivati al TP`))}
- {const tt={};d.forEach(t=>(t.targets||[]).forEach(x=>{if(!x.type||!x.st||x.st==='wait')return;(tt[x.type]=tt[x.type]||{n:0,h:0,r:[]});tt[x.type].n++;if(x.st==='hit')tt[x.type].h++;const r=legR(t,x.p);if(r!=null)tt[x.type].r.push(r)}));
-  const ks=Object.keys(tt).filter(k=>tt[k].n>=3).sort((a,b)=>tt[b].h/tt[b].n-tt[a].h/tt[a].n);
-  const hr=k=>tt[k].h/tt[k].n,gap=ks.length>1?hr(ks[0])-hr(ks[ks.length-1]):0;
-  M.push(!ks.length?fewCard('Quale target funziona meglio?','Indica per ogni TP il tipo di target (struttura, liquidità responsabili, primo arrivo): il journal ti dirà quale viene raggiunto più spesso.'):ks.length>1&&gap<0.15?vcard('Quale target funziona meglio?','neutral','Simili',Math.min(...ks.map(k=>tt[k].n)),'Per ora i tipi di target vengono raggiunti più o meno con la stessa frequenza.',ks.map(k=>`${esc(k)}: raggiunto ${tt[k].h} volte su ${tt[k].n}, a una distanza tipica di ${fR(med(tt[k].r))}`).join('<br>')):vcard('Quale target funziona meglio?','good','Più affidabile',tt[ks[0]].n,`Il target che viene raggiunto più spesso è <b>${esc(ks[0].toLowerCase())}</b>.${ks.length>1?` Il meno affidabile: <b>${esc(ks[ks.length-1].toLowerCase())}</b>.`:''}`,ks.map(k=>`${esc(k)}: raggiunto ${tt[k].h} volte su ${tt[k].n}, a una distanza tipica di ${fR(med(tt[k].r))}`).join('<br>')))}
- {const e=G.filter(g=>g.dim==='Ingresso');M.push(e.length<2?fewCard('Pendente o a mercato sul trigger?','Indica nel trade come sei entrato: pendente sulla zona o a mercato sul trigger.'):(()=>{const b=e.slice().sort((x,y)=>y.avg-x.avg);return vcard('Pendente o a mercato sul trigger?',b[0].avg-b[1].avg>=0.2?'good':'neutral',b[0].avg-b[1].avg>=0.2?esc(b[0].k):'Simili',Math.min(b[0].n,b[1].n),b[0].avg-b[1].avg>=0.2?`Ti conviene entrare <b>${esc(b[0].k.toLowerCase())}</b>: rendi ${strength(b[0].avg-b[1].avg)} meglio.`:'I due modi di entrare danno risultati simili.',b.map(x=>det(x.n,x.avg).replace('Su',esc(x.k)+':')).join('<br>'))})())}
- {const pip=P(s.pipSize)||0.1,dist=t=>t.entry!=null&&t.sl!=null?Math.abs(t.entry-t.sl):null,win=d.filter(t=>t.pnl>0&&t.mae!=null&&t.entry!=null),mfeAll=d.filter(t=>t.mfe!=null&&t.entry!=null),be=d.filter(t=>t.exitType==='Breakeven'&&t.mfe!=null&&t.entry!=null);
-  const adv=t=>Math.max(0,t.dir==='Short'?t.mae-t.entry:t.entry-t.mae)/pip,fav=t=>Math.max(0,t.dir==='Short'?t.entry-t.mfe:t.mfe-t.entry)/pip,f0=v=>v==null?'–':Math.round(v).toLocaleString('it-IT');
-  if(mfeAll.length<3)M.push(fewCard('Quanto si spingono i tuoi trade','Inserisci MAE e MFE (facoltativi) in almeno 3 trade: ti dirò in pips quanto vanno contro e a favore prima di tornare indietro.'));
-  else{const F=mfeAll.map(fav),A=win.map(adv),B=be.map(fav),S=d.map(dist).filter(x=>x!=null).map(x=>x/pip);
-   M.push(vcard('Quanto si spingono i tuoi trade','neutral','In pips',mfeAll.length,`Metà dei tuoi trade si spinge almeno a <b>${f0(med(F))} pips</b> a favore, uno su quattro oltre <b>${f0(pct(F,.75))} pips</b>.${A.length>=3?` I trade vincenti vanno contro di te di solito <b>${f0(med(A))} pips</b>, al massimo circa ${f0(pct(A,.8))} nell'80% dei casi.`:''}${B.length>=2?` Prima di tornare a breakeven arrivano di solito a <b>${f0(med(B))} pips</b>.`:''}${S.length?` Il tuo stop tipico è di ${f0(med(S))} pips.`:''}`,`Pips calcolati con 1 pip = ${String(pip).replace('.',',')} di prezzo (cambialo nelle Impostazioni). Valori tipici = mediane, meno sensibili ai trade estremi.`))}}
- html+=sec('Come gestisci il trade','Confronta le tue scelte di gestione con l\'alternativa.',`<div class="vgrid">${M.join('')}</div>`);
- // 5 head
- const H=[];
- {const dn=d.filter(t=>{const c=S.docs[dayId(t.date)];return c&&!c.ok&&t.r!=null}),dy=d.filter(t=>{const c=S.docs[dayId(t.date)];return c&&c.ok&&t.r!=null});
-  H.push(dn.length<2||dy.length<2?fewCard('Check pre-sessione','Fai il check prima di operare: il journal confronterà i giorni conformi con gli altri.'):(()=>{const a=avgOf(dy.map(t=>t.r)),b=avgOf(dn.map(t=>t.r));return vcard('Check pre-sessione',b<a-0.1?'bad':'neutral',b<a-0.1?'Conta':'Per ora no',Math.min(dn.length,dy.length),b<a-0.1?`Nei giorni non conformi rendi ${strength(a-b)} peggio. Quando il check dice no, non operare.`:'Per ora i giorni non conformi non vanno peggio degli altri.',`Conformi: ${fR(a)} · non conformi: ${fR(b)}`)})())}
- {const ch=sortT(d.slice()).filter(t=>t.r!=null),afL=[],afW=[];for(let i=1;i<ch.length;i++)(ch[i-1].pnl<0?afL:afW).push(ch[i].r);
-  H.push(afL.length<3||afW.length<3?fewCard('Dopo una perdita','Con qualche trade in più vedrai se dopo una perdita operi peggio (il rischio revenge).'):(()=>{const a=avgOf(afW),b=avgOf(afL);return vcard('Dopo una perdita',b<a-0.2?'bad':'good',b<a-0.2?'Attenzione':'Sotto controllo',afL.length,b<a-0.2?`Il trade dopo una perdita va ${strength(a-b)} peggio degli altri: dopo uno stop, fai una pausa prima del prossimo.`:'Dopo una perdita mantieni la stessa qualità: bene.',`Dopo una perdita: ${fR(b)} · dopo una vincita: ${fR(a)}`)})())}
- {const ga=d.filter(t=>(t.grade==='A'||t.grade==='B')&&t.r!=null),gc=d.filter(t=>(t.grade==='C'||t.grade==='D')&&t.r!=null);
-  H.push(ga.length<2||gc.length<2?fewCard('Il valore della disciplina','Dai un voto all\'esecuzione dei trade chiusi: vedrai quanto vale eseguire bene.'):(()=>{const a=avgOf(ga.map(t=>t.r)),b=avgOf(gc.map(t=>t.r));return vcard('Il valore della disciplina',a>b?'good':'neutral',a>b?'Paga':'Per ora no',Math.min(ga.length,gc.length),a>b?`Quando esegui bene (voto A o B) rendi ${strength(a-b)} di più di quando esegui male.`:'Per ora eseguire bene o male non cambia il risultato: serve un campione più grande.',`A/B: ${fR(a)} · C/D: ${fR(b)}`)})())}
- {const E=[],miss=[];lines(s.rules).forEach(rule=>{const rel=d.filter(t=>t.r!=null&&(t.rulesSet||[]).includes(rule)),y=rel.filter(t=>(t.rules||[]).includes(rule)),no=rel.filter(t=>!(t.rules||[]).includes(rule));
-   if(y.length<2||no.length<2){miss.push(rule);return}const a=avgOf(y.map(t=>t.r)),b=avgOf(no.map(t=>t.r));
-   E.push(vcard(esc(rule),a-b>=0.2?'good':'neutral',a-b>=0.2?'Conta':'Per ora non cambia',Math.min(y.length,no.length),a-b>=0.2?`Quando la rispetti rendi ${strength(a-b)} meglio di quando la salti.`:'Rispettarla o no, per ora il risultato è simile.',`Rispettata: ${fR(a)} a trade · saltata: ${fR(b)} a trade`))});
-  [['Rischio entro il limite','autoRiskOk','Quando rischi più del previsto rendi'],['Stop non spostato rispetto al piano','autoStopOk','Quando sposti lo stop rendi']].forEach(([title,f,txt])=>{const y=d.filter(t=>t.r!=null&&t[f]===true),no=d.filter(t=>t.r!=null&&t[f]===false);if(y.length<2||no.length<2)return;const a=avgOf(y.map(t=>t.r)),b=avgOf(no.map(t=>t.r));
-   E.push(vcard(title,a-b>=0.2?'good':'neutral',a-b>=0.2?'Conta':'Per ora non cambia',Math.min(y.length,no.length),a-b>=0.2?`${txt} ${strength(a-b)} peggio.`:'Per ora non cambia il risultato.',`Rispettata: ${fR(a)} · no: ${fR(b)}`))});
-  if(miss.length)E.push(fewCard(E.length?'Le altre regole':'Regole di esecuzione',`Spunta nei trade chiusi le regole che hai rispettato: quando avrai almeno 2 trade in cui una regola è rispettata e 2 in cui no, vedrai se ti fa rendere di più.`));
-  html+=sec('Regole di esecuzione','Rispettare le tue regole ti fa rendere di più?',`<div class="vgrid">${E.join('')}</div>`)}
- html+=sec('La tua testa','',`<div class="vgrid">${H.join('')}</div>`);
- $('verdicts').innerHTML=html}
+  if(sl.length<3)R.push({key:'stop',label:'Stop troppo stretto',few:true,hint:'Nei trade chiusi a stop rispondi "dopo lo stop è arrivato al TP?": così capiamo se lo stop ti toglie da trade buoni.'});
+  else{const sh=y/sl.length,kind=sh>=0.4?'bad':sh>=0.2?'neutral':'good';R.push({key:'stop',label:'Stop troppo stretto',kind,side:kind==='good'?'R':'L',mag:kind==='good'?0.2:sh,val:`${y} su ${sl.length}`,n:sl.length,
+   text:kind==='bad'?'Molti trade chiusi a stop poi arrivano al target: lo stop è spesso nel rumore. Valuta un margine oltre il livello, o di entrare dopo la presa di liquidità.':kind==='neutral'?'Ogni tanto lo stop ti toglie da un trade che poi va a target: è normale, tienilo d\'occhio.':'Quando vieni stoppato, di solito l\'idea era davvero sbagliata: lo stop fa il suo lavoro.',numbers:`${y} trade su ${sl.length} chiusi a stop sono poi arrivati al TP finale`})}}
+ R.push({sep:'Regole di esecuzione'});
+ const FEWRULE='Spunta nei trade chiusi le regole che hai rispettato: servono almeno 2 trade in cui è rispettata e 2 in cui no.';
+ lines(s.rules).forEach((rule,i)=>{const rel=d.filter(t=>t.r!=null&&(t.rulesSet||[]).includes(rule)),y=rel.filter(t=>(t.rules||[]).includes(rule)).map(t=>t.r),no=rel.filter(t=>!(t.rules||[]).includes(rule)).map(t=>t.r),v=pairs(y,no);
+  diffRow('rule'+i,rule,v,0.2,{few:FEWRULE,good:'Quando la rispetti rendi '+(v?strength(v.diff):'')+' meglio di quando la salti.',bad:'Strano: quando la salti rendi meglio. Con più trade capiremo se è un caso.',neutral:'Rispettarla o no, per ora il risultato è simile.'},v&&`Rispettata: ${fR(v.a)} a trade · saltata: ${fR(v.b)} a trade`)});
+ [['risk','Rischio entro il limite','autoRiskOk','rischi più del previsto'],['stopok','Stop non spostato rispetto al piano','autoStopOk','sposti lo stop']].forEach(([k,label,f,w])=>{const v=pairs(d.filter(t=>t.r!=null&&t[f]===true).map(t=>t.r),d.filter(t=>t.r!=null&&t[f]===false).map(t=>t.r));
+  diffRow(k,label,v,0.2,{few:'Controllo automatico: comparirà quando avrai almeno 2 trade in cui '+w+' e 2 in cui no.',good:'Quando '+w+' rendi '+(v?strength(v.diff):'')+' peggio.',bad:'Per ora quando '+w+' non vai peggio: con più trade capiremo se è un caso.',neutral:'Per ora non cambia il risultato.'},v&&`Rispettato: ${fR(v.a)} · no: ${fR(v.b)}`)});
+ {const we=d.filter(t=>(t.mis||[]).length&&t.r!=null),ne=d.filter(t=>!(t.mis||[]).length&&t.r!=null),v=pairs(we.map(t=>t.r),ne.map(t=>t.r));let worst='';
+  if(v){const mc={};we.forEach(t=>t.mis.forEach(m=>{mc[m]=(mc[m]||0)+(t.r||0)}));const w=Object.entries(mc).sort((x,y)=>x[1]-y[1])[0];if(w&&w[1]<0)worst=w[0]}
+  diffRow('err','Trade con errori',v,0.2,{few:'Servono almeno 2 trade con errori e 2 senza per vedere quanto ti costano.',good:'Per ora i trade con errori non vanno peggio degli altri: con più trade il quadro sarà più chiaro.',bad:`Senza errori renderesti ${v?strength(v.diff):''} di più.${worst?` L'errore che pesa di più: <b>${esc(worst.toLowerCase())}</b>.`:''}`,neutral:'I trade con errori per ora non vanno peggio degli altri.'},v&&`Con errori: ${fR(v.a)} a trade · senza: ${fR(v.b)} a trade`);
+  const last=R[R.length-1];if(last.kind==='good'){last.kind='neutral';last.text='Per ora i trade con errori non vanno peggio degli altri: con più trade il quadro sarà più chiaro.'}last.worst=worst}
+ R.push({sep:'La tua testa'});
+ if(S.mode!=='bt'){const dy=d.filter(t=>{const c=S.docs[dayId(t.date)];return c&&c.ok&&t.r!=null}).map(t=>t.r),dn=d.filter(t=>{const c=S.docs[dayId(t.date)];return c&&c.type==='day'&&!c.ok&&t.r!=null}).map(t=>t.r),v=pairs(dy,dn);
+  diffRow('chk','Rispettare il check pre-sessione',v,0.1,{few:'Fai il check prima di operare: il journal confronterà i giorni conformi con gli altri.',good:`Nei giorni non conformi rendi ${v?strength(v.diff):''} peggio. Quando il check dice no, non operare.`,bad:'Per ora i giorni non conformi non vanno peggio: con più trade capiremo se è un caso.',neutral:'Per ora i giorni non conformi non vanno peggio degli altri.'},v&&`Conformi: ${fR(v.a)} · non conformi: ${fR(v.b)}`)}
+ {const ch=sortT(d.slice()).filter(t=>t.r!=null),afL=[],afW=[];for(let i=1;i<ch.length;i++)(ch[i-1].pnl<0?afL:afW).push(ch[i].r);const v=afL.length>=3&&afW.length>=3?{diff:avgOf(afL)-avgOf(afW),n:afL.length,a:avgOf(afL),b:avgOf(afW)}:null;
+  diffRow('afl','Il trade dopo una perdita',v?{...v,n:v.n}:null,0.2,{few:'Con qualche trade in più vedrai se dopo una perdita operi peggio (il rischio revenge).',good:'Dopo una perdita mantieni la stessa qualità, anzi fai meglio: bene.',bad:`Il trade dopo una perdita va ${v?strength(v.diff):''} peggio degli altri: dopo uno stop, fai una pausa prima del prossimo.`,neutral:'Dopo una perdita mantieni la stessa qualità: bene.'},v&&`Dopo una perdita: ${fR(v.a)} · dopo una vincita: ${fR(v.b)}`)}
+ {const v=pairs(d.filter(t=>(t.grade==='A'||t.grade==='B')&&t.r!=null).map(t=>t.r),d.filter(t=>(t.grade==='C'||t.grade==='D')&&t.r!=null).map(t=>t.r));
+  diffRow('disc','Eseguire bene (voto A o B)',v,0.2,{few:'Dai un voto all\'esecuzione dei trade chiusi: vedrai quanto vale eseguire bene.',good:`Quando esegui bene rendi ${v?strength(v.diff):''} di più di quando esegui male.`,bad:'Per ora eseguire bene o male non cambia il risultato: serve un campione più grande.',neutral:'Per ora eseguire bene o male non cambia il risultato: serve un campione più grande.'},v&&`A/B: ${fR(v.a)} · C/D: ${fR(v.b)}`)}
+ return R}
+function mgmtHTML(R){return`<div class="mglegend"><span></span><span class="mgaxis"><span>← ti costa</span><span>ti aiuta →</span></span><span></span></div>`+R.map(r=>{if(r.sep)return`<div class="mgsep">${r.sep}</div>`;const open=S.mgSel===r.key;
+  const bar=r.few?'<em>Pochi dati</em>':`<span class="h l">${r.side==='L'?`<i style="width:${Math.max(4,r.mag*100)}%"></i>`:''}</span><span class="h r">${r.side==='R'?`<i style="width:${Math.max(4,r.mag*100)}%"></i>`:''}</span>`;
+  return`<div class="mg ${r.few?'few':r.kind} ${open?'open':''}" data-mg="${r.key}" role="button" tabindex="0" aria-expanded="${open}"><span class="mgl" title="${esc(r.label)}">${esc(r.label)}</span><span class="mgb">${bar}</span><span class="mgv">${r.few?'':r.val}</span></div>${open?`<div class="mgd">${r.few?`<p>${r.hint}</p>`:`<p>${r.text}</p><div class="mdact"><span class="hint">${r.numbers||''}</span>${relPill(r.n)}</div>`}</div>`:''}`}).join('')}
+function synthHTML(d,s,M,R){const rs=d.map(t=>t.r).filter(x=>x!=null),n=rs.length,st=stats(d,s),ov=avgOf(rs)||0;
+ if(n<5)return`<p>Servono almeno 5 trade chiusi${nActive()?' con questi filtri':''} per un primo giudizio (ora ${n}). Continua a registrare, anche in backtest.</p>`;
+ const wrW=st.wr<45?'vinci meno della metà delle volte':st.wr<=55?'vinci circa una volta su due':'vinci più della metà delle volte',pw=!st.ratio?'':st.ratio>=1.8?'le vincite sono molto più grandi delle perdite':st.ratio>=1.1?'le vincite sono più grandi delle perdite':st.ratio>=0.9?'vincite e perdite si equivalgono':'le perdite sono più grandi delle vincite';
+ let h=`Su ${n} trade ${wrW}${pw?' e '+pw:''}: ${ov>0.1?`nel complesso il metodo <b class="win">guadagna</b> (${fR(ov)} a trade).`:ov<-0.1?`nel complesso per ora <b class="loss">perde</b> (${fR(ov)} a trade).`:`nel complesso per ora sei <b>in pari</b> (${fR(ov)} a trade).`}`;
+ const all=[];M.rows.forEach(({f,items})=>{if(f.id==='ttype')return;items.forEach(i=>{if(i.n>=3)all.push({f:f.id,...i})})});
+ const sc=i=>i.delta*Math.sqrt(i.n),best=all.filter(i=>i.kind==='good').sort((a,b)=>sc(b)-sc(a)).slice(0,2),worst=all.filter(i=>i.kind==='bad').sort((a,b)=>sc(a)-sc(b)).slice(0,2);
+ if(best.length)h+=` Rendi meglio ${best.map(i=>phr(i.f,i.v)).join(' e ')}`;if(worst.length)h+=(best.length?'; peggio ':' Rendi peggio ')+worst.map(i=>phr(i.f,i.v)).join(' e ');if(best.length||worst.length)h+='.';
+ const e=R.find(r=>r.key==='err');if(e&&e.kind==='bad')h+=` Gli errori ti costano${e.worst?`: il più pesante è <b>${esc(e.worst.toLowerCase())}</b>`:''}.`;
+ const helps=R.filter(r=>!r.sep&&!r.few&&r.kind==='good'&&r.key!=='err').slice(0,1),costs=R.filter(r=>!r.sep&&!r.few&&r.kind==='bad'&&r.key!=='err').slice(0,1);
+ if(costs.length)h+=` Nella gestione, attenzione a: <b>${esc(lc1(costs[0].label))}</b>.`;else if(helps.length)h+=` Nella gestione ti aiuta: <b>${esc(lc1(helps[0].label))}</b>.`;
+ return`<p>${h}</p>`}
+function renderAnalysis(d,s,all){const M=mapData(d),R=mgmtData(d,s),n=d.filter(t=>t.r!=null).length;
+ const pip=P(s.pipSize)||0.1,dist=t=>t.entry!=null&&t.sl!=null?Math.abs(t.entry-t.sl):null,win=d.filter(t=>t.pnl>0&&t.mae!=null&&t.entry!=null),mfeAll=d.filter(t=>t.mfe!=null&&t.entry!=null),be=d.filter(t=>t.exitType==='Breakeven'&&t.mfe!=null&&t.entry!=null);
+ const adv=t=>Math.max(0,t.dir==='Short'?t.mae-t.entry:t.entry-t.mae)/pip,fav=t=>Math.max(0,t.dir==='Short'?t.entry-t.mfe:t.mfe-t.entry)/pip,f0=v=>v==null?'–':Math.round(v).toLocaleString('it-IT');let pips;
+ if(mfeAll.length<3)pips=`<p class="hint" style="margin:0">Inserisci MAE e MFE (facoltativi) in almeno 3 trade: ti dirò in pips quanto vanno contro e a favore prima di tornare indietro.</p>`;
+ else{const F=mfeAll.map(fav),A=win.map(adv),B=be.map(fav),SS=d.map(dist).filter(x=>x!=null).map(x=>x/pip);
+  pips=`<p style="margin:0">Metà dei tuoi trade si spinge almeno a <b>${f0(med(F))} pips</b> a favore, uno su quattro oltre <b>${f0(pct(F,.75))} pips</b>.${A.length>=3?` I trade vincenti vanno contro di te di solito <b>${f0(med(A))} pips</b>, al massimo circa ${f0(pct(A,.8))} nell'80% dei casi.`:''}${B.length>=2?` Prima di tornare a breakeven arrivano di solito a <b>${f0(med(B))} pips</b>.`:''}${SS.length?` Il tuo stop tipico è di ${f0(med(SS))} pips.`:''}</p><p class="hint" style="margin:8px 0 0">1 pip = ${String(pip).replace('.',',')} di prezzo (cambialo nelle Impostazioni). Valori tipici = mediane. Su ${mfeAll.length} trade.</p>`}
+ $('verdicts').innerHTML=`<div class="card synth"><h3><span>Sintesi${nActive()?' <small>con i filtri attivi</small>':''}</span>${n>=5?relPill(n):''}</h3>${synthHTML(d,s,M,R)}</div>
+  <div class="card fmap"><h3><span>Dove rendi meglio e peggio <small>risultato medio per trade e numero di trade · tocca un valore per i dettagli</small></span></h3>
+   <div class="mlegend"><span><i class="lg good"></i>meglio della tua media</span><span><i class="lg neutral"></i>in linea</span><span><i class="lg bad"></i>peggio</span><span><i class="lg few"></i>più tenue = meno trade</span></div>${mapHTML(M)}</div>
+  <div class="card mgcard"><h3><span>Le tue scelte di gestione e le regole <small>quanto ti fanno guadagnare o perdere in R a trade · tocca una riga</small></span></h3>${mgmtHTML(R)}</div>
+  <div class="card"><h3>Quanto si spingono i tuoi trade <small>in pips, solo mentre sei nel trade</small></h3>${pips}</div>`}
+/* ---------- confronto A/B ---------- */
+const CKEY=()=>'ej5_cmp_'+S.mode;
+function CMP(){if(!S.cmp||S.cmp.mode!==S.mode){let c=null;try{c=JSON.parse(lsGet(CKEY())||'null')}catch(e){}S.cmp={mode:S.mode,A:{c:(c&&c.A&&c.A.c)||{}},B:{c:(c&&c.B&&c.B.c)||{},rest:!!(c&&c.B&&c.B.rest)},open:null}}return S.cmp}
+function saveCmp(){const c=CMP();lsSet(CKEY(),JSON.stringify({A:{c:c.A.c},B:{c:c.B.c,rest:!!c.B.rest}}))}
+function renderCompare(d,s,all){const C=CMP(),facts=FACT(),A=d.filter(t=>matchC(t,C.A.c,facts)),B=C.B.rest?d.filter(t=>!A.includes(t)):d.filter(t=>matchC(t,C.B.c,facts));
+ const hasA=Object.keys(C.A.c).length,hasB=Object.keys(C.B.c).length;
+ const side=(k,list)=>{const c=C[k].c,has=k==='A'?hasA:hasB,rest=k==='B'&&C.B.rest;return`<div class="card cside ${C.open===k?'picking':''}"><h3><span><b class="tagab ${k.toLowerCase()}">${k}</b>Casistica ${k}</span><small>${list.length===1?'1 trade':list.length+' trade'}</small></h3>
+  <div class="cconds">${rest?'<span class="hint">Tutti i trade che <b>non</b> rientrano in A</span>':has?condChips(c,k):'<span class="hint">Nessuna condizione: tutti i trade dei filtri in alto</span>'}</div>
+  <div class="cacts">${rest?'':`<button class="btn sm${C.open===k?' on':''}" data-cpick="${k}">${C.open===k?'Fatto':'Scegli le condizioni'}</button>`}${k==='B'?`<button class="btn sm ghost${C.B.rest?' on':''}" data-crest>${C.B.rest?'✓ ':''}Il resto dei trade</button>`:''}</div></div>`};
+ const sa=stats(A,s),sb=stats(B,s),ok=A.length>=3&&B.length>=3,pctOf=(l,f)=>l.length?Math.round(l.filter(f).length/l.length*100)+'%':'–';
+ const pfS=x=>!isFinite(x.pf)?(x.n?'nessuna perdita':'–'):x.pf.toFixed(2).replace('.',',');
+ const rows=[['Trade',sa.n,sb.n,null],['Win rate',sa.n?sa.wr.toFixed(0)+'%':'–',sb.n?sb.wr.toFixed(0)+'%':'–',[sa.wr,sb.wr,1]],['Risultato medio',fR(sa.n?sa.expR:null),fR(sb.n?sb.expR:null),[sa.expR,sb.expR,1]],['R totali',fR(sa.n?sa.totR:null),fR(sb.n?sb.totR:null),null],
+  ['Profit factor',pfS(sa),pfS(sb),[isFinite(sa.pf)?sa.pf:99,isFinite(sb.pf)?sb.pf:99,1]],['Chiusi a breakeven',pctOf(A,t=>t.exitType==='Breakeven'),pctOf(B,t=>t.exitType==='Breakeven'),null],
+  ['Chiusi a stop',pctOf(A,t=>t.exitType==='Stop loss'),pctOf(B,t=>t.exitType==='Stop loss'),[A.filter(t=>t.exitType==='Stop loss').length/(A.length||1),B.filter(t=>t.exitType==='Stop loss').length/(B.length||1),-1]],
+  ['Con errori',pctOf(A,t=>(t.mis||[]).length),pctOf(B,t=>(t.mis||[]).length),[A.filter(t=>(t.mis||[]).length).length/(A.length||1),B.filter(t=>(t.mis||[]).length).length/(B.length||1),-1]]];
+ const best=(c,i)=>{if(!ok||!c)return'';const [a,b,dir]=c;if(Math.abs(a-b)<1e-9)return'';return(dir>0?(i===0?a>b:b>a):(i===0?a<b:b<a))?'best':''};
+ const table=`<div class="ctwrap"><table class="ctable"><thead><tr><th></th><th><b class="tagab a">A</b></th><th><b class="tagab b">B</b></th></tr></thead><tbody>${rows.map(r=>`<tr><td>${r[0]}</td><td class="${best(r[3],0)}">${r[1]}</td><td class="${best(r[3],1)}">${r[2]}</td></tr>`).join('')}</tbody></table></div>`;
+ let v;if(!ok)v=`<p>Servono almeno 3 trade per lato per confrontare le due casistiche (ora A ha ${A.length} trade, B ne ha ${B.length}).</p>`;
+ else{const df=sa.expR-sb.expR,both=A.filter(t=>B.includes(t)).length,nm=Math.min(A.length,B.length);
+  v=`<p>${Math.abs(df)<0.15?`<b>A e B rendono in modo simile</b>: ${fR(sa.expR)} contro ${fR(sb.expR)} a trade.`:`<b>${df>0?'A':'B'} rende ${strength(df)} meglio di ${df>0?'B':'A'}</b>: ${fR(df>0?sa.expR:sb.expR)} a trade contro ${fR(df>0?sb.expR:sa.expR)}.`} In A vinci il ${sa.wr.toFixed(0)}% delle volte, in B il ${sb.wr.toFixed(0)}%.${both?` Attenzione: ${both} trade rientrano in entrambe le casistiche.`:''}</p><div class="mdact">${relPill(nm)}<span class="hint">L'affidabilità dipende dal lato con meno trade (${nm}).</span></div>`}
+ const pick=C.open&&!(C.open==='B'&&C.B.rest)?`<div class="card cpick"><h3><span>Condizioni per <b class="tagab ${C.open.toLowerCase()}">${C.open}</b><small>più valori dello stesso filtro valgono come "oppure", filtri diversi devono valere tutti</small></span><button class="btn sm" data-cpick="${C.open}">Fatto</button></h3>${pickerHTML(C[C.open].c,C.open,all)}</div>`:'';
+ $('rCmp').innerHTML=`<p class="hint" style="margin:0 0 12px">Confronta due casistiche diverse tra i ${d.length} trade chiusi dei filtri in alto. Esempio: A = griglia 8 su 8, B = il resto dei trade.</p>
+  <div class="cmpgrid">${side('A',A)}${side('B',B)}</div>${pick}
+  <div class="card"><h3><span>Risultato del confronto</span>${hasA||hasB||C.B.rest?'':'<small>scegli almeno una condizione</small>'}</h3>${table}<div class="cverd">${v}</div></div>`}
 function renderReports(d,s,all){
- renderVerdicts(d,s,all);
+ $$('#rTabs button').forEach(b=>b.classList.toggle('on',b.dataset.rt===S.rtab));
+ $('rCmp').hidden=S.rtab!=='c';$('rAnal').hidden=S.rtab==='c';
+ if(S.rtab==='c'){renderCompare(d,s,all);return}
+ renderAnalysis(d,s,all);
  renderMonthly(d,s);lastMC=d;renderMC();
  const card=(t,b,sub='')=>`<div class="card"><h3>${t}${sub?`<small>${sub}</small>`:''}</h3>${b}</div>`;
  const maeW=d.filter(t=>t.pnl>0&&t.maeR!=null),mfeL=d.filter(t=>t.pnl<0&&t.mfeR!=null),eff=d.filter(t=>t.mfeR>0&&t.r!=null);
@@ -1287,7 +1491,8 @@ document.addEventListener('click',e=>{const t=e.target;
  if(t.id==='drawerWrap'){closeDrawer();return}
  const z=t.closest('[data-zoom]');if(z){$('lbImg').src=z.src;$('lb').hidden=false;return}
  if(t.closest('#lb')){$('lb').hidden=true;return}
- const dd=t.closest('[data-day]');if(dd){$('fFrom').value=dd.dataset.day;$('fTo').value=dd.dataset.day;$('filters').hidden=false;S.statusF='closed';go('trade');return}
+ if(clickFilters(t))return;
+ const dd=t.closest('[data-day]');if(dd){S.F.period='custom';S.F.from=S.F.to=dd.dataset.day;saveF();S.statusF='closed';go('trade');return}
  const cl=t.closest('[data-cal]');if(cl){S.calDate.setMonth(S.calDate.getMonth()+ +cl.dataset.cal);render();return}
  const sf=t.closest('#statusFilter button');if(sf){S.statusF=sf.dataset.v;render();return}
  const rv=t.closest('[data-rv]');if(rv){const k=rv.dataset.rv;put('rv_'+S.mode+'_'+k,{type:'review',mode:S.mode,week:k,good:$('rg_'+k).value,improve:$('ri_'+k).value,goal:$('ro_'+k).value,updated:Date.now()});rv.blur();toast('Review salvata');return}
@@ -1322,7 +1527,7 @@ document.addEventListener('click',e=>{const t=e.target;
  if(t.id==='useEst'){cur.gross=+t.dataset.v;$('f_gross').value=px(cur.gross);calc();return}
 });
 document.addEventListener('keydown',e=>{if(e.key==='Escape'){if(!$('lb').hidden)$('lb').hidden=true;else if(!$('drawerWrap').hidden)closeDrawer()}
- if((e.key==='Enter'||e.key===' ')&&e.target.matches('.chip,.gitem')){e.preventDefault();e.target.click()}});
+ if((e.key==='Enter'||e.key===' ')&&e.target.matches('.chip,.gitem,.mg')){e.preventDefault();e.target.click()}});
 const onField=e=>{const el=e.target;if(!cur)return;if(el.closest('#editPane'))draftSave();
  if(el.dataset.f){cur[el.dataset.f]=el.dataset.n?P(el.value):el.value;if(el.dataset.f==='link')linkBtn();calc();return}
  if(el.dataset.tp!=null){const i=+el.dataset.tp,k=el.dataset.k;cur.targets[i][k]=(k==='st'||k==='type')?el.value:P(el.value);calc()}};
@@ -1337,9 +1542,7 @@ $('delTrade').onclick=e=>twoStep(e.currentTarget,'Tocca di nuovo per eliminare',
 $('fileIn').onchange=e=>{[...e.target.files].forEach(addImage);e.target.value=''};
 document.addEventListener('paste',e=>{if($('drawerWrap').hidden||$('editPane').hidden)return;const items=[...(e.clipboardData?.items||[])].filter(i=>i.type.startsWith('image/'));if(items.length){e.preventDefault();items.forEach(i=>addImage(i.getAsFile()))}});
 const dr=$('drop');dr.addEventListener('dragover',e=>{e.preventDefault();dr.classList.add('hot')});dr.addEventListener('dragleave',()=>dr.classList.remove('hot'));dr.addEventListener('drop',e=>{e.preventDefault();dr.classList.remove('hot');[...e.dataTransfer.files].forEach(addImage)});
-$('fBtn').onclick=()=>{$('filters').hidden=!$('filters').hidden};
-$('fReset').onclick=()=>resetFilters();
-FIDS.forEach(i=>$(i).addEventListener('input',render));
+$('fFrom').addEventListener('change',e=>setF(F=>{F.from=e.target.value}));$('fTo').addEventListener('change',e=>setF(F=>{F.to=e.target.value}));
 $('saveSet').onclick=saveSettings;$('expBtn').onclick=exportData;$('impFile').onchange=importFile;
 {let rt;let wide=window.matchMedia('(min-width:1000px)').matches;window.addEventListener('resize',()=>{clearTimeout(rt);rt=setTimeout(()=>{const w=window.matchMedia('(min-width:1000px)').matches;if(w!==wide){wide=w;render()}},200)})}
 window.addEventListener('hashchange',()=>go(location.hash.slice(1),false));
