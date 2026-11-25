@@ -290,6 +290,18 @@ label.l,.lbl{display:block;font-size:12px;font-weight:500;color:var(--mut);margi
 .mcgrid b{display:block;font-size:18px;color:var(--fg);margin-top:2px}
 .reco{margin-top:12px;padding:12px 14px;border-radius:14px;background:var(--acc-soft);border:1px solid var(--acc);font-size:13.5px}
 .daycard{margin-bottom:14px}
+.mantra{display:flex;align-items:center;gap:12px;margin:-6px 0 16px;padding:11px 8px 11px 16px;border-left:3px solid var(--acc);background:linear-gradient(90deg,var(--acc-soft),transparent 85%);border-radius:0 12px 12px 0;min-height:48px}
+.mantra:empty{display:none}
+.mantra .mq{flex:1;min-width:0;line-height:1.5}
+.mantra .mt{font-size:14.5px;font-style:italic;color:var(--fg)}
+.mantra .ma{display:block;font-size:11.5px;color:var(--mut);margin-top:3px;font-style:normal}
+.mantra .ma.own{color:var(--acc)}
+.mantra .mnav{display:flex;gap:2px;flex:none}
+.mantra .mnav button{border:0;background:none;color:var(--faint);cursor:pointer;width:30px;height:30px;border-radius:50%;font-size:16px;line-height:1}
+.mantra .mnav button:hover{background:var(--surface2);color:var(--fg)}
+.daycard.must{border-color:var(--acc);box-shadow:0 0 0 3px var(--acc-soft)}
+.daycard .mustnote{margin:-4px 0 12px;font-size:13px;color:var(--acc);font-weight:600}
+@media (max-width:760px){.mantra{margin:-4px 0 14px;padding:9px 4px 9px 12px}.mantra .mt{font-size:13.5px}}
 .daycard .row2{display:flex;flex-wrap:wrap;gap:14px;align-items:flex-end}
 .verdict{display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap;border-radius:var(--r);padding:12px 16px;margin-bottom:14px;font-size:14px}
 .verdict.ok{background:var(--win-soft);border:1px solid var(--win)}.verdict.no{background:var(--loss-soft);border:1px solid var(--loss)}
@@ -447,6 +459,7 @@ details.more > summary{cursor:pointer;font:700 15px var(--f-display);padding:12p
     <button class="btn pri newbtn" data-new>+ Nuovo trade</button>
    </div>
   </header>
+  <div class="mantra" id="mantra" aria-live="polite"></div>
   <div id="banner"></div>
 
   <section class="fbar" id="fbar" aria-label="Filtri">
@@ -559,6 +572,12 @@ details.more > summary{cursor:pointer;font:700 15px var(--f-display);padding:12p
      <div class="fg" style="grid-template-columns:1fr 1fr;margin-top:10px"><div><label class="l" for="sGridMin">Punteggio minimo per un setup valido</label><input id="sGridMin" inputmode="numeric"></div><div><label class="l" for="sPip">Valore di 1 pip (in prezzo)</label><input id="sPip" inputmode="decimal"><div class="hint">Oro: di solito 0,10. Alcuni broker usano 0,01</div></div><div><label class="l" for="sSleep">Ore di sonno minime (check pre-sessione)</label><input id="sSleep" inputmode="decimal"></div></div>
      <label class="l" for="sTargets" style="margin-top:12px">Tipi di target (uno per riga)</label><textarea id="sTargets" rows="3"></textarea>
      <label class="l" for="sRules" style="margin-top:12px">Regole della checklist (una per riga)</label><textarea id="sRules" rows="6"></textarea>
+    </div>
+    <div class="card">
+     <h3>Le mie frasi <small>il tuo mantra, in cima a ogni pagina</small></h3>
+     <label class="l" for="sMantra">Una frase per riga. Per aggiungere un autore: frase — autore</label>
+     <textarea id="sMantra" rows="6" placeholder="Aspetto il mio setup, il resto è rumore"></textarea>
+     <div class="hint">Le tue frasi si alternano a quelle dei trader professionisti, sia in Live sia in Backtest. Si salvano con "Salva impostazioni".</div>
     </div>
    </div>
    <div style="margin-top:14px;display:flex;gap:10px;flex-wrap:wrap"><button class="btn pri" id="saveSet">Salva impostazioni</button></div>
@@ -879,7 +898,8 @@ function setMode(m){S.mode=m;lsSet('ej3_mode',m);fillSettings();S.F=loadF();S.fp
 const DAYSL=['Domenica','Lunedì','Martedì','Mercoledì','Giovedì','Venerdì','Sabato'];
 const gridV=t=>t.gridTot?(t.gridScore>=8?'8 su 8':t.gridScore===7?'7 su 8':t.gridOk?'6 su 8':'Sotto la soglia'):null;
 const rulesV=t=>{const set=t.rulesSet||[];if(!set.length)return null;return set.every(r=>(t.rules||[]).includes(r))&&t.autoRiskOk!==false&&t.autoStopOk!==false?'Tutte rispettate':'Almeno una saltata'};
-const chkV=t=>{if(t.mode==='bt'||!t.date)return null;const c=S.docs[dayId(t.date)];return c&&c.type==='day'?(c.ok?'Giorno conforme':'Giorno non conforme'):'Check non fatto'};
+const ckDay=t=>t.ckd||(t.mode!=='bt'?t.date:null);
+const chkV=t=>{const dd=ckDay(t);if(!dd)return null;const c=S.docs[dayId(dd)];return c&&c.type==='day'?(c.ok?'Giorno conforme':'Giorno non conforme'):'Check non fatto'};
 const FG=['Quando','Setup','Esecuzione','Testa','Risultato','Versione'];
 function FACT(){const s=settings();return[
  {id:'day',g:'Quando',l:'Giorno',fn:t=>t.date?DAYSL[new Date(t.date+'T12:00').getDay()]:null,opts:['Lunedì','Martedì','Mercoledì','Giovedì','Venerdì']},
@@ -893,7 +913,7 @@ function FACT(){const s=settings();return[
  {id:'rules',g:'Esecuzione',l:'Regole',fn:rulesV,opts:['Tutte rispettate','Almeno una saltata']},
  {id:'mis',g:'Esecuzione',l:'Errori',fn:t=>(t.mis||[]).length?t.mis:['Nessun errore'],opts:['Nessun errore',...MIS]},
  {id:'grade',g:'Esecuzione',l:'Voto',fn:t=>t.grade||null,opts:GRADE},
- {id:'chk',g:'Testa',l:'Check pre-sessione',fn:chkV,opts:S.mode==='bt'?[]:['Giorno conforme','Giorno non conforme','Check non fatto']},
+ {id:'chk',g:'Testa',l:'Check pre-sessione',fn:chkV,opts:['Giorno conforme','Giorno non conforme','Check non fatto']},
  {id:'emo',g:'Testa',l:'Emozione',fn:t=>t.emo||null,opts:EMO},
  {id:'news',g:'Testa',l:'News',fn:t=>t.news||null,opts:NEWS},
  {id:'res',g:'Risultato',l:'Esito',fn:t=>t.pnl>0?'Win':t.pnl<0?'Loss':'Breakeven',opts:['Win','Loss','Breakeven']},
@@ -930,6 +950,7 @@ function renderFbar(n,all){const F=S.F;
   <div class="svlist">${L.length?L.map((x,i)=>`<span class="svitem"><button class="svload" data-fload="${i}" title="${esc(x.name)}">${esc(x.name)}</button><button class="svdel" data-fdel="${i}" aria-label="Elimina ${esc(x.name)}">×</button></span>`).join(''):'<span class="hint">Nessun filtro salvato. Imposta i filtri che usi spesso e dagli un nome qui sotto.</span>'}</div>
   <div class="svnew"><input id="fSaveName" maxlength="40" placeholder="Nome, es. Setup validi"><button class="btn sm pri" data-fsave ${nActive()?'':'disabled'}>Salva i filtri attuali</button></div>`}}
 function clickFilters(t){
+ const mq=t.closest('[data-mq]');if(mq){stepMantra(+mq.dataset.mq);return true}
  const pb=t.closest('[data-per]');if(pb){setF(F=>{F.period=pb.dataset.per;if(F.period==='custom'&&!F.from&&!F.to){const d=new Date();F.to=ymd(d);d.setDate(d.getDate()-30);F.from=ymd(d)}});return true}
  const rm=t.closest('[data-frm]');if(rm){const [sc,id]=rm.dataset.frm.split('|');if(sc==='F')setF(F=>{delete F.c[id]});else{delete CMP()[sc].c[id];saveCmp();render()}return true}
  if(t.closest('[data-fadd]')){S.fpanel=S.fpanel==='add'?null:'add';render();return true}
@@ -981,6 +1002,7 @@ function bars(rows,val=r=>r.pnl,fmt=r=>money(r.pnl)){if(!rows.length)return'<p c
 function render(){
  const s=settings(),all=trades(),closed=sortT(applyF(all.filter(t=>t.status==='closed'||!t.status)));
  $$('.modesw button').forEach(b=>b.classList.toggle('on',b.dataset.m===S.mode));
+ renderMantra();
  const mt=$('mtag');mt.dataset.m=S.mode;mt.textContent=S.mode==='live'?'LIVE':'BACKTEST';
  $('drawer').style.borderTop='3px solid var('+(S.mode==='live'?'--win':'--blue')+')';
  $('dlSym').innerHTML=[...new Set([...instruments(s).map(i=>i.sym),...all.map(t=>t.sym)])].map(x=>`<option value="${esc(x)}">`).join('');
@@ -1000,11 +1022,11 @@ function dayEval(c,s){const r=[];if(c.sleep==null||c.sleep<(P(s.sleepMin)||6))r.
  const bm=(c.moods||[]).filter(x=>BADMOODS.includes(x));if(bm.length)r.push('stato mentale: '+bm.join(', ').toLowerCase());
  const today=ymd(new Date()),lossToday=trades('live').filter(t=>(t.status||'closed')==='closed'&&(t.out||t.in||'').slice(0,10)===today).reduce((a,t)=>a+(t.pnl||0),0);
  if(lossToday<=-s.capital*s.daily/100)r.push('limite di perdita giornaliera raggiunto');return r}
-function renderDay(force){const box=$('dayBox');if(S.mode!=='live'){box.innerHTML='';return}if(!force&&box.contains(document.activeElement))return;
+function renderDay(force){const box=$('dayBox');if(!force&&box.contains(document.activeElement))return;
  const s=settings('live'),c=S.docs[dayId()],dd=S.dayDraft;
  if(c&&!dd.editing){const r=dayEval(c,s),hot=(c.news||[]).filter(x=>x!=='Nessuna');
   box.innerHTML=`<div class="verdict ${r.length?'no':'ok'}"><span><b>${r.length?'Oggi non sei conforme':'Check di oggi: conforme'}</b>${r.length?' · '+esc(r.join(' · ')):` · ${fl(c.sleep)} ore di sonno`}${hot.length?` · <b>News oggi: ${esc(hot.join(', '))}</b>`:''}</span><button class="btn sm" id="dayEdit">Modifica</button></div>`;return}
- box.innerHTML=`<div class="card daycard"><h3>Check pre-sessione <small>prima di aprire il grafico</small></h3>
+ box.innerHTML=`<div class="card daycard ${S.pendingNew?'must':''}" id="dayCard"><h3>Check pre-sessione <small>prima di aprire il grafico · vale per Live e Backtest</small></h3>${S.pendingNew?'<p class="mustnote">Prima del primo trade di oggi fai il check. Appena lo salvi si apre il trade.</p>':''}
   <div class="row2"><div style="width:150px"><label class="l" for="daySleep">Ore di sonno</label><input id="daySleep" inputmode="decimal" value="${dd.sleep==null?'':px(dd.sleep)}"></div>
   <div><span class="lbl">Energia</span><div class="seg">${[1,2,3,4,5].map(i=>`<button data-den="${i}" class="${dd.energy===i?'on':''}">${i}</button>`).join('')}</div></div></div>
   <div class="sub2">Come ti senti</div><div class="chips">${MOODS.map(m=>`<span class="chip ${dd.moods.includes(m)?'on':''}" role="button" tabindex="0" data-dmood="${m}">${m}</span>`).join('')}</div>
@@ -1012,7 +1034,7 @@ function renderDay(force){const box=$('dayBox');if(S.mode!=='live'){box.innerHTM
   <div style="display:flex;justify-content:flex-end;margin-top:12px"><button class="btn pri sm" id="daySave">Salva check</button></div></div>`}
 function saveDay(){const dd=S.dayDraft;if(dd.sleep==null){toast('Inserisci le ore di sonno',1);return}if(!dd.energy){toast('Scegli il livello di energia',1);return}
  const s=settings('live'),doc={type:'day',mode:'live',date:ymd(new Date()),sleep:dd.sleep,energy:dd.energy,moods:dd.moods,news:dd.news,updated:Date.now()};doc.reasons=dayEval(doc,s);doc.ok=!doc.reasons.length;
- S.dayDraft={sleep:null,energy:0,moods:[],news:[],editing:false};document.activeElement&&document.activeElement.blur();put(dayId(),doc);renderDay(true);toast(doc.ok?'Check salvato: puoi operare':'Check salvato: oggi non sei conforme',!doc.ok)}
+ S.dayDraft={sleep:null,energy:0,moods:[],news:[],editing:false};document.activeElement&&document.activeElement.blur();put(dayId(),doc);const pend=S.pendingNew;S.pendingNew=null;renderDay(true);toast(doc.ok?'Check salvato: puoi operare':'Check salvato: oggi non sei conforme',!doc.ok);if(pend)setTimeout(()=>openEdit(pend.id,pend.preset,pend.draft),350)}
 function dayToGrid(){const h=$('gridHint');h.textContent='';if(S.mode!=='live'||editId)return;const s=settings(),item=gridOf(s).find(x=>/stato personale/i.test(x.t));if(!item)return;
  const c=S.docs[dayId((cur.in||'').slice(0,10)||ymd(new Date()))];if(!c){h.textContent='Non hai fatto il check pre-sessione di oggi: la conferma "'+item.t+'" va valutata a mano.';return}
  const r=dayEval(c,s);if(!r.length){if(!cur.grid.includes(item.t))cur.grid.push(item.t);h.textContent='"'+item.t+'" spuntata dal check pre-sessione.'}else{cur.grid=cur.grid.filter(x=>x!==item.t);h.textContent='Check di oggi non conforme ('+r.join(', ')+'): "'+item.t+'" non è spuntata.'}drawGrid()}
@@ -1155,7 +1177,7 @@ function mgmtData(d,s){const R=[],diffRow=(key,label,v,thr,txt,numbers)=>{if(!v|
   diffRow('err','Trade con errori',v,0.2,{few:'Servono almeno 2 trade con errori e 2 senza per vedere quanto ti costano.',good:'Per ora i trade con errori non vanno peggio degli altri: con più trade il quadro sarà più chiaro.',bad:`Senza errori renderesti ${v?strength(v.diff):''} di più.${worst?` L'errore che pesa di più: <b>${esc(worst.toLowerCase())}</b>.`:''}`,neutral:'I trade con errori per ora non vanno peggio degli altri.'},v&&`Con errori: ${fR(v.a)} a trade · senza: ${fR(v.b)} a trade`);
   const last=R[R.length-1];if(last.kind==='good'){last.kind='neutral';last.text='Per ora i trade con errori non vanno peggio degli altri: con più trade il quadro sarà più chiaro.'}last.worst=worst}
  R.push({sep:'La tua testa'});
- if(S.mode!=='bt'){const dy=d.filter(t=>{const c=S.docs[dayId(t.date)];return c&&c.ok&&t.r!=null}).map(t=>t.r),dn=d.filter(t=>{const c=S.docs[dayId(t.date)];return c&&c.type==='day'&&!c.ok&&t.r!=null}).map(t=>t.r),v=pairs(dy,dn);
+ {const ck=t=>{const dd=ckDay(t);return dd?S.docs[dayId(dd)]:null},dy=d.filter(t=>{const c=ck(t);return c&&c.ok&&t.r!=null}).map(t=>t.r),dn=d.filter(t=>{const c=ck(t);return c&&c.type==='day'&&!c.ok&&t.r!=null}).map(t=>t.r),v=pairs(dy,dn);
   diffRow('chk','Rispettare il check pre-sessione',v,0.1,{few:'Fai il check prima di operare: il journal confronterà i giorni conformi con gli altri.',good:`Nei giorni non conformi rendi ${v?strength(v.diff):''} peggio. Quando il check dice no, non operare.`,bad:'Per ora i giorni non conformi non vanno peggio: con più trade capiremo se è un caso.',neutral:'Per ora i giorni non conformi non vanno peggio degli altri.'},v&&`Conformi: ${fR(v.a)} · non conformi: ${fR(v.b)}`)}
  {const ch=sortT(d.slice()).filter(t=>t.r!=null),afL=[],afW=[];for(let i=1;i<ch.length;i++)(ch[i-1].pnl<0?afL:afW).push(ch[i].r);const v=afL.length>=3&&afW.length>=3?{diff:avgOf(afL)-avgOf(afW),n:afL.length,a:avgOf(afL),b:avgOf(afW)}:null;
   diffRow('afl','Il trade dopo una perdita',v?{...v,n:v.n}:null,0.2,{few:'Con qualche trade in più vedrai se dopo una perdita operi peggio (il rischio revenge).',good:'Dopo una perdita mantieni la stessa qualità, anzi fai meglio: bene.',bad:`Il trade dopo una perdita va ${v?strength(v.diff):''} peggio degli altri: dopo uno stop, fai una pausa prima del prossimo.`,neutral:'Dopo una perdita mantieni la stessa qualità: bene.'},v&&`Dopo una perdita: ${fR(v.a)} · dopo una vincita: ${fR(v.b)}`)}
@@ -1318,11 +1340,12 @@ function calcPage(build){const s=settings();
  $('c_prsum').innerHTML=msgs.join('<br>')}
 function drawPrs(){$('c_prs').innerHTML=C.prs.map((x,i)=>`<div class="prrow"><b>TP${i+1}</b><input data-pr="${i}" data-k="p" inputmode="decimal" value="${x.p==null?'':px(x.p)}" placeholder="prezzo" aria-label="Prezzo TP${i+1}"><input data-pr="${i}" data-k="pct" inputmode="decimal" value="${x.pct==null?'':px(x.pct)}" aria-label="Percentuale TP${i+1}"><span class="out">–</span><button class="x" data-delpr="${i}" aria-label="Rimuovi parziale">✕</button></div>`).join('')}
 function calcToTrade(){const s=settings(),total=P($('c_total').value),e=P($('c_entry').value),sl=P($('c_sl').value);
- openEdit(null,{status:'plan',sym:$('c_sym').value,entry:e,sl:sl,lots:total,dir:e!=null&&sl!=null&&sl>e?'Short':'Long',targets:C.prs.map(x=>({p:x.p,pct:x.pct,st:'wait'}))})}
+ newTrade({status:'plan',sym:$('c_sym').value,entry:e,sl:sl,lots:total,dir:e!=null&&sl!=null&&sl>e?'Short':'Long',targets:C.prs.map(x=>({p:x.p,pct:x.pct,st:'wait'}))})}
 
 /* ---------- impostazioni ---------- */
-function fillSettings(){const s=settings();$('sCap').value=px(s.capital);$('sCcy').value=s.ccy;$('sFx').value=px(s.fx);$('sRisk').value=px(s.risk);$('sDaily').value=px(s.daily);$('sVer').value=s.version;$('sStep').value=px(s.step);$('sBase').value=s.base||'saldo';$('sInst').value=s.instruments;$('sSetups').value=s.setups;$('sRules').value=s.rules;$('sGrid').value=s.grid;$('sGridMin').value=gridMinOf(s);$('sSleep').value=px(s.sleepMin);$('sPip').value=px(s.pipSize);$('sTargets').value=s.targetTypes;$('setModeLbl').textContent=S.mode==='live'?'Live':'Backtest'}
+function fillSettings(){const s=settings();if(document.activeElement!==$('sMantra'))$('sMantra').value=myQuotes().join('\n');$('sCap').value=px(s.capital);$('sCcy').value=s.ccy;$('sFx').value=px(s.fx);$('sRisk').value=px(s.risk);$('sDaily').value=px(s.daily);$('sVer').value=s.version;$('sStep').value=px(s.step);$('sBase').value=s.base||'saldo';$('sInst').value=s.instruments;$('sSetups').value=s.setups;$('sRules').value=s.rules;$('sGrid').value=s.grid;$('sGridMin').value=gridMinOf(s);$('sSleep').value=px(s.sleepMin);$('sPip').value=px(s.pipSize);$('sTargets').value=s.targetTypes;$('setModeLbl').textContent=S.mode==='live'?'Live':'Backtest'}
 function saveSettings(){const cap=P($('sCap').value);if(!cap||cap<=0){toast('Inserisci un capitale valido',1);return}
+ {const L=lines($('sMantra').value);if(L.join('\n')!==myQuotes().join('\n'))put('mantra',{type:'mantra',list:L,updated:Date.now()})}
  put('set_'+S.mode,{type:'settings',mode:S.mode,capital:cap,ccy:$('sCcy').value,fx:P($('sFx').value)||1,risk:P($('sRisk').value)||1,daily:P($('sDaily').value)||3,version:$('sVer').value.trim()||'v1',step:P($('sStep').value)||0.01,base:$('sBase').value,instruments:$('sInst').value,setups:$('sSetups').value,rules:$('sRules').value,grid:$('sGrid').value,gridMin:gridMinOf({gridMin:$('sGridMin').value}),sleepMin:P($('sSleep').value)||6,pipSize:P($('sPip').value)||0.1,targetTypes:$('sTargets').value});toast('Impostazioni salvate')}
 
 /* ---------- vista trade ---------- */
@@ -1356,13 +1379,45 @@ function openView(id){openViewId=id;$('viewPane').hidden=false;$('editPane').hid
 
 /* ---------- form ---------- */
 function blankTrade(){const s=settings(),n=new Date();n.setMinutes(n.getMinutes()-n.getTimezoneOffset());
- return{quick:S.mode==='bt',status:'closed',sym:instruments(s)[0]?.sym||'XAUUSD',dir:'Long',in:n.toISOString().slice(0,16),out:'',targets:[{p:null,pct:null,st:'wait'}],setups:[],rules:[],mis:[],imgs:[],version:s.version,rating:0}}
+ return{quick:S.mode==='bt',status:'closed',sym:instruments(s)[0]?.sym||'XAUUSD',dir:'Long',in:n.toISOString().slice(0,16),out:'',targets:[{p:null,pct:null,st:'wait'}],setups:[],rules:[],mis:[],imgs:[],version:s.version,rating:0,ckd:ymd(new Date())}}
 const draftKey=()=>'ej3_draft_'+S.mode;
 let draftT=null;
 function draftSave(){if(!cur||$('editPane').hidden)return;cur._dirty=true;clearTimeout(draftT);draftT=setTimeout(()=>{lsSet(draftKey(),JSON.stringify({editId,cur,at:Date.now()}))},350)}
 function draftGet(){try{return JSON.parse(lsGet(draftKey())||'null')}catch(e){return null}}
 function draftClear(){clearTimeout(draftT);try{localStorage.removeItem(draftKey())}catch(e){}}
 const ago=ms=>{const m=Math.round(ms/60000);return m<1?'meno di un minuto':m<60?m+' min':Math.round(m/60)+' ore'};
+/* ---------- mantra (v1.6) ---------- */
+const PROQ=[
+ ['Gli elementi di un buon trading sono: tagliare le perdite, tagliare le perdite e tagliare le perdite.','Ed Seykota','Market Wizards'],
+ ['Non concentrarti sul fare soldi: concentrati sul proteggere quello che hai.','Paul Tudor Jones','Market Wizards'],
+ ['Può succedere qualsiasi cosa.','Mark Douglas','Trading in the Zone'],
+ ['Non serve sapere cosa succederà dopo per fare soldi.','Mark Douglas','Trading in the Zone'],
+ ['Ogni momento del mercato è unico.','Mark Douglas','Trading in the Zone'],
+ ['Un vantaggio non è altro che l\'indicazione che una cosa ha più probabilità di succedere di un\'altra.','Mark Douglas','Trading in the Zone'],
+ ['Per qualsiasi insieme di condizioni che definisce un vantaggio, vincite e perdite si distribuiscono in modo casuale.','Mark Douglas','Trading in the Zone'],
+ ['Vincendo o perdendo, ognuno ottiene dal mercato quello che vuole.','Ed Seykota','Market Wizards'],
+ ['Penso sempre a come non perdere soldi, più che a come farne.','Bruce Kovner','Market Wizards'],
+ ['Se non scommetti, non puoi vincere. Se perdi tutte le fiche, non puoi più scommettere.','Larry Hite','Market Wizards'],
+ ['Chi perde media le posizioni in perdita.','Paul Tudor Jones','Market Wizards'],
+ ['Non conta avere ragione o torto: conta quanto guadagni quando hai ragione e quanto perdi quando hai torto.','George Soros, citato da Stanley Druckenmiller','The New Market Wizards'],
+ ['Non è mai stato il mio pensare a farmi fare i soldi veri. È sempre stato il mio stare fermo.','Jesse Livermore','Reminiscences of a Stock Operator'],
+ ['Il mercato ha un solo lato: non quello rialzista né quello ribassista, ma quello giusto.','Jesse Livermore','Reminiscences of a Stock Operator'],
+ ['I nemici mortali dello speculatore sono l\'ignoranza, l\'avidità, la paura e la speranza.','Jesse Livermore','Reminiscences of a Stock Operator'],
+ ['A Wall Street non c\'è niente di nuovo: quello che succede oggi è già successo e succederà di nuovo.','Jesse Livermore','Reminiscences of a Stock Operator']];
+const myQuotes=()=>((S.docs.mantra&&S.docs.mantra.list)||[]).filter(Boolean);
+function parseQ(x){const m=x.match(/^(.*\S)\s+[—–-]\s+(\S.*)$/);return m?[m[1],m[2],'',1]:[x,'',  '',1]}
+function allQuotes(){const mine=myQuotes().map(parseQ),pro=PROQ,out=[];const n=Math.max(mine.length,pro.length);
+ // le tue frasi si alternano a quelle dei professionisti, così compaiono spesso
+ if(!mine.length)return pro.slice();let j=0;for(let i=0;i<pro.length;i++){out.push(pro[i]);if(i%2===1){out.push(mine[j%mine.length]);j++}}
+ for(;j<mine.length;j++)out.push(mine[j]);return out}
+function renderMantra(){const box=$('mantra');if(!box)return;const L=allQuotes();if(!L.length){box.innerHTML='';return}
+ const today=Math.floor((Date.now()-new Date().getTimezoneOffset()*60000)/864e5);let off=0;try{const o=JSON.parse(lsGet('ej6_mantra')||'null');if(o&&o.d===today)off=o.o|0}catch(e){}
+ const q=L[(((today+off)%L.length)+L.length)%L.length],own=q[3]===1;
+ box.innerHTML=`<div class="mq"><span class="mt">«${esc(q[0])}»</span><span class="ma ${own?'own':''}">${own?(q[1]?esc(q[1])+' · ':'')+'il tuo mantra':esc(q[1])+' · <i>'+esc(q[2])+'</i>'}</span></div><div class="mnav"><button data-mq="-1" aria-label="Frase precedente">‹</button><button data-mq="1" aria-label="Frase successiva">›</button></div>`}
+function stepMantra(d){const today=Math.floor((Date.now()-new Date().getTimezoneOffset()*60000)/864e5);let off=0;try{const o=JSON.parse(lsGet('ej6_mantra')||'null');if(o&&o.d===today)off=o.o|0}catch(e){}lsSet('ej6_mantra',JSON.stringify({d:today,o:off+d}));renderMantra()}
+
+function needCheck(){return!S.docs[dayId()]}
+function newTrade(preset,fromDraft){if(needCheck()){S.pendingNew={id:fromDraft&&fromDraft.editId||null,preset:preset||null,draft:fromDraft&&fromDraft.cur||null};S.dayDraft.editing=false;if(!$('drawerWrap').hidden)closeDrawer();go('dashboard');renderDay(true);setTimeout(()=>{const c=$('dayCard');if(c){c.scrollIntoView({behavior:'smooth',block:'center'});const i=$('daySleep');if(i)i.focus({preventScroll:true})}},60);toast('Prima fai il check di oggi');return}openEdit(fromDraft&&fromDraft.editId||null,preset,fromDraft&&fromDraft.cur)}
 function openEdit(id,preset,fromDraft){editId=id||null;const s=settings();cur=fromDraft?clone(fromDraft):id?clone(S.docs[id]):Object.assign(blankTrade(),preset||{});
  if(cur.quick==null)cur.quick=false;
  if(!cur.targets||!cur.targets.length)cur.targets=[{p:null,pct:null,st:'wait'}];cur.setups=setupsOf(cur);cur.imgs=cur.imgs||[];cur.rules=cur.rules||[];cur.mis=normMis(cur.mis);cur.status=cur.status||'closed';
@@ -1452,7 +1507,7 @@ function saveTrade(next){if(uploading){toast('Aspetta che finisca il caricamento
  if(t.quick)t.riskEst=false;delete t._dirty;
  put(id,t).then(()=>{if(S.assets)gone.forEach(a=>S.assets.delete(a).catch(()=>{}))});draftClear();
  toast(editId?'Trade aggiornato':'Trade salvato');
- if(next){openEdit(null,{quick:true,sym:t.sym,dir:t.dir,in:t.in,version:t.version});return}
+ if(next){newTrade({quick:true,sym:t.sym,dir:t.dir,in:t.in,version:t.version});return}
  openView(id)}
 function applyQuick(){const q=!!cur.quick;$('editPane').classList.toggle('quick',q);$$('#formMode button').forEach(x=>x.classList.toggle('on',(x.dataset.fm==='quick')===q));
  $('quickHint').hidden=!q;$('saveNext').hidden=!q;if(q){cur.status='closed';drawChips()}applyStatus();calc()}
@@ -1483,7 +1538,7 @@ function importFile(e){const f=e.target.files[0];e.target.value='';if(!f)return;
 /* ---------- eventi ---------- */
 document.addEventListener('click',e=>{const t=e.target;
  const p=t.closest('[data-p]');if(p){go(p.dataset.p);return}
- if(t.closest('[data-new]')){openEdit();return}
+ if(t.closest('[data-new]')){newTrade();return}
  const m=t.closest('.modesw button');if(m){setMode(m.dataset.m);return}
  const o=t.closest('[data-open]');if(o&&!t.closest('a')){openView(o.dataset.open);return}
  const ed=t.closest('[data-edit]');if(ed){openEdit(ed.dataset.edit);return}
@@ -1503,9 +1558,9 @@ document.addEventListener('click',e=>{const t=e.target;
  if(t.id==='autoLots'){const s=settings(),bal=s.base==='iniziale'?s.capital:balanceOf(s,editId),l=lotsFor(bal*s.risk/100,cur.entry,cur.sl,cur.sym,s);if(l==null){toast('Inserisci prima entrata e stop loss',1);return}cur.lots=l;$('f_lots').value=fl(l);calc();toast(`${fl(l)} lotti per rischiare il ${fl(s.risk)}%`);return}
  if(t.id==='moreBtn'||t.closest('#moreBtn')){$('more').hidden=false;return}
  if(t.id==='more'){$('more').hidden=true;return}
- if(t.id==='draftUse'){const dr=draftGet();if(dr)openEdit(dr.editId,null,dr.cur);return}
+ if(t.id==='draftUse'){const dr=draftGet();if(dr){if(dr.editId)openEdit(dr.editId,null,dr.cur);else newTrade(null,dr)}return}
  if(t.id==='draftDrop'){draftClear();$('draftBox').innerHTML='';return}
- if(t.id==='bannerDraft'){const dr=draftGet();$('banner').innerHTML='';if(dr)openEdit(dr.editId,null,dr.cur);return}
+ if(t.id==='bannerDraft'){const dr=draftGet();$('banner').innerHTML='';if(dr){if(dr.editId)openEdit(dr.editId,null,dr.cur);else newTrade(null,dr)}return}
  if(t.id==='bannerDraftNo'){draftClear();$('banner').innerHTML='';return}
  const dm=t.closest('[data-dmood]');if(dm){const v=dm.dataset.dmood,a=S.dayDraft.moods;S.dayDraft.moods=a.includes(v)?a.filter(x=>x!==v):[...a,v];renderDay(true);return}
  const dn=t.closest('[data-dnews]');if(dn){const v=dn.dataset.dnews,a=S.dayDraft.news;S.dayDraft.news=a.includes(v)?a.filter(x=>x!==v):[...a,v];renderDay(true);return}

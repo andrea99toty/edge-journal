@@ -3,6 +3,12 @@
 Ogni aggiornamento lascia una copia completa del journal nella cartella [`versioni/`](versioni/), così si può sempre tornare a una versione precedente.
 I dati (trade, impostazioni, screenshot) stanno su Supabase e non cambiano quando si cambia versione del codice.
 
+## v1.6 — 25 novembre 2026 · [`versioni/index-v1.6.html`](versioni/index-v1.6.html)
+- Check pre-sessione obbligatorio: il primo "Nuovo trade" del giorno (Live o Backtest, anche da calcolatore e "Salva e nuovo") porta prima al check; appena salvato si apre il trade. Un solo check al giorno vale per entrambe le modalità. Se il giorno non è conforme il trade si può aprire comunque. Modificare o chiudere trade esistenti resta libero
+- Il check ora compare anche in Backtest; ogni nuovo trade ricorda il giorno del check (`ckd`), così i Report confrontano giorni conformi e non anche in Backtest
+- Mantra in cima a ogni pagina: una frase al giorno di trader professionisti (con autore e libro) alternata alle tue frasi; frecce per cambiare frase
+- Impostazioni: nuova sezione "Le mie frasi" (una per riga, autore facoltativo con " — "), sincronizzata su tutti i dispositivi
+
 ## v1.5 — 25 novembre 2026 · [`versioni/index-v1.5.html`](versioni/index-v1.5.html)
 - Nuova barra dei filtri sempre visibile su Dashboard, Trade, Report e Insights: periodo con un tocco (questa settimana, questo mese, ultimi 3 mesi, tutto, date a scelta), filtri attivi come etichette che si tolgono con la ×, numero di trade sempre in vista
 - "+ Aggiungi filtro" con i filtri divisi per gruppo: Quando (giorno, sessione, ora), Setup (griglia, conferme, tipo di target, ingresso, direzione), Esecuzione (regole, errori, voto), Testa (check pre-sessione, emozione, news), Risultato, Versione. Più valori dello stesso filtro valgono come "oppure"
