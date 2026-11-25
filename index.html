@@ -22,7 +22,7 @@ button{font:inherit;color:inherit}
 .app{display:flex;min-height:100vh}
 .side{width:224px;flex:none;position:sticky;top:0;height:100vh;border-right:1px solid var(--line);background:var(--surface);display:flex;flex-direction:column;gap:4px;padding:22px 14px}
 .brand{display:flex;align-items:center;gap:10px;font:700 18px var(--f-display);padding:0 8px 22px}
-.brand i{width:32px;height:32px;border-radius:11px;background:var(--brand);color:#fff;display:grid;place-items:center;font:800 13px var(--f-body);font-style:normal}
+.brand i{width:32px;height:32px;flex:none;display:block;font-style:normal}.brand i svg{width:100%;height:100%;display:block}
 .nav{display:flex;align-items:center;gap:11px;padding:10px 12px;border-radius:10px;border:0;background:none;color:var(--mut);font-weight:500;cursor:pointer;text-align:left;width:100%}
 .nav svg{width:18px;height:18px;flex:none}
 .nav:hover{background:var(--surface2);color:var(--fg)}
@@ -40,7 +40,7 @@ button{font:inherit;color:inherit}
 .syncpill[data-s="err"] b,.syncpill[data-s="slow"] b{background:var(--loss)}
 @keyframes pulse{50%{opacity:.35}}
 
-.main{flex:1;min-width:0;padding-block:26px 60px;padding-left:max(32px,env(safe-area-inset-left,0px));padding-right:max(32px,env(safe-area-inset-right,0px));max-width:1440px}
+.main{flex:1;min-width:0;padding-block:26px 60px;padding-left:max(32px,env(safe-area-inset-left,0px));padding-right:max(32px,env(safe-area-inset-right,0px));max-width:2200px}
 .top{display:flex;align-items:center;justify-content:space-between;gap:14px;flex-wrap:wrap;margin-bottom:20px}
 .top h1{font-size:26px;display:flex;align-items:center;gap:10px;flex-wrap:wrap}
 .mtag{font:700 11px var(--f-body);letter-spacing:.08em;padding:4px 9px;border-radius:20px}
@@ -225,6 +225,14 @@ details.more > summary{cursor:pointer;font:700 15px var(--f-display);padding:12p
 .autochk .ok{color:var(--win)}.autochk .no{color:var(--loss)}.autochk .na{color:var(--faint)}
 .viewlist{display:grid;gap:4px;font-size:13.5px}
 .viewlist div{display:flex;gap:8px;align-items:flex-start}
+.ttable{width:100%;border-collapse:collapse;font-size:13.5px}
+.ttable th{font-size:11.5px;font-weight:600;color:var(--mut);text-align:left;padding:10px 12px;border-bottom:1px solid var(--line);white-space:nowrap;position:sticky;top:0;background:var(--surface)}
+.ttable td{padding:11px 12px;border-bottom:1px solid var(--line);white-space:nowrap;vertical-align:middle}
+.ttable tr.trow{cursor:pointer}.ttable tr.trow:hover td{background:var(--surface2)}
+.ttable td.r,.ttable th.r{text-align:right}
+.ttable td.pat{white-space:normal;max-width:280px}
+.ttable .pill{margin:1px 3px 1px 0}
+.tablecard{padding:0;overflow-x:auto}
 .tv{display:flex;align-items:center;justify-content:center;gap:9px;padding:13px;border-radius:12px;background:var(--blue-soft);border:1px solid var(--blue);color:var(--blue);font-weight:600;text-decoration:none;margin-top:12px}
 .footacts{display:flex;gap:10px;margin-top:16px;position:sticky;bottom:calc(-40px - env(safe-area-inset-bottom,0px));background:var(--bg);padding:12px 0 calc(14px + env(safe-area-inset-bottom,0px))}
 .footacts .pri{flex:1}
@@ -258,6 +266,15 @@ details.more > summary{cursor:pointer;font:700 15px var(--f-display);padding:12p
 .toast.err{background:var(--loss);color:#fff}
 
 @media (max-width:1100px){.two{grid-template-columns:1fr}}
+@media (min-width:1600px){.kpis{grid-template-columns:repeat(8,minmax(0,1fr))}.chartbox{height:340px}.two{grid-template-columns:minmax(0,2.2fr) minmax(0,1fr)}}
+@media (min-width:1280px){
+ .drawer{width:min(1060px,100%)}
+ #editPane:not([hidden]){display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);column-gap:14px;grid-auto-flow:row dense;align-items:start}
+ #editPane > *{grid-column:1/-1;min-width:0}
+ #editPane > .sec.half{grid-column:auto}
+ #editPane.quick > .sec.half{grid-column:1/-1}
+ #grid.gridlist{grid-template-columns:repeat(2,minmax(0,1fr))}
+}
 @media (max-width:900px){
  .side{display:none}
  .main{padding-block:12px 110px;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px))}
@@ -296,7 +313,7 @@ details.more > summary{cursor:pointer;font:700 15px var(--f-display);padding:12p
 
 <div class="login" id="login" hidden>
  <form id="loginForm" autocomplete="on">
-  <div class="brand"><i>Au</i>Edge Journal</div>
+  <div class="brand"><i class="logo"><svg viewBox="0 0 96 96" aria-hidden="true"><rect width="96" height="96" rx="24" fill="#161D2E"/><g fill="#E8ECF4"><rect x="24" y="28" width="9" height="40" rx="2"/><rect x="24" y="28" width="26" height="8" rx="2"/><rect x="24" y="44" width="21" height="8" rx="2"/><rect x="24" y="60" width="26" height="8" rx="2"/></g><polyline points="54,66 63,54 71,59 82,36" fill="none" stroke="#5FCF9F" stroke-width="5.5" stroke-linecap="round" stroke-linejoin="round"/></svg></i>Edge Journal</div>
   <div><h2>Bentornato</h2><p>Accedi per vedere i tuoi trade.</p></div>
   <div><label class="l" for="lgEmail">Email</label><input id="lgEmail" type="email" autocomplete="username" required></div>
   <div><label class="l" for="lgPass">Password</label><input id="lgPass" type="password" autocomplete="current-password" required></div>
@@ -306,7 +323,7 @@ details.more > summary{cursor:pointer;font:700 15px var(--f-display);padding:12p
 </div>
 <div class="app">
  <aside class="side">
-  <div class="brand"><i>Au</i>Edge Journal</div>
+  <div class="brand"><i class="logo"><svg viewBox="0 0 96 96" aria-hidden="true"><rect width="96" height="96" rx="24" fill="#161D2E"/><g fill="#E8ECF4"><rect x="24" y="28" width="9" height="40" rx="2"/><rect x="24" y="28" width="26" height="8" rx="2"/><rect x="24" y="44" width="21" height="8" rx="2"/><rect x="24" y="60" width="26" height="8" rx="2"/></g><polyline points="54,66 63,54 71,59 82,36" fill="none" stroke="#5FCF9F" stroke-width="5.5" stroke-linecap="round" stroke-linejoin="round"/></svg></i>Edge Journal</div>
   <button class="nav" data-p="dashboard"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M3 3v18h18"/><path d="M7 15l4-4 3 3 5-6"/></svg>Dashboard</button>
   <button class="nav" data-p="trade"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M8 6h13M8 12h13M8 18h13M3 6h.01M3 12h.01M3 18h.01"/></svg>Trade</button>
   <button class="nav" data-p="calcolatore"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><rect x="4" y="2" width="16" height="20" rx="3"/><path d="M8 6h8M8 11h.01M12 11h.01M16 11h.01M8 15h.01M12 15h.01M16 15h.01M8 19h.01M12 19h4"/></svg>Calcolatore</button>
@@ -321,7 +338,7 @@ details.more > summary{cursor:pointer;font:700 15px var(--f-display);padding:12p
 
  <div class="main">
   <div class="mobiletop">
-   <div class="brand"><i>Au</i>Edge</div>
+   <div class="brand"><i class="logo"><svg viewBox="0 0 96 96" aria-hidden="true"><rect width="96" height="96" rx="24" fill="#161D2E"/><g fill="#E8ECF4"><rect x="24" y="28" width="9" height="40" rx="2"/><rect x="24" y="28" width="26" height="8" rx="2"/><rect x="24" y="44" width="21" height="8" rx="2"/><rect x="24" y="60" width="26" height="8" rx="2"/></g><polyline points="54,66 63,54 71,59 82,36" fill="none" stroke="#5FCF9F" stroke-width="5.5" stroke-linecap="round" stroke-linejoin="round"/></svg></i>Edge</div>
    <div class="modesw" style="flex:0 1 190px"><button data-m="live">Live</button><button data-m="bt">Backtest</button></div>
   </div>
   <header class="top">
@@ -547,18 +564,18 @@ details.more > summary{cursor:pointer;font:700 15px var(--f-display);padding:12p
    <div class="sub2">Perché non l'ho preso</div><div class="chips" data-chips="missWhy"></div>
   </div>
 
-  <div class="sec">
+  <div class="sec half">
    <h4>Pattern e note tecniche <small>seleziona quelli presenti</small></h4>
    <div class="chips" data-chips="setups" data-multi="1"></div>
    <div class="fg" style="margin-top:12px"><div><label class="l" for="f_version">Versione playbook</label><input id="f_version" data-f="version"></div></div>
   </div>
 
-  <div class="sec" data-full>
+  <div class="sec half" data-full>
    <h4>Contesto di mercato</h4>
    <div class="sub2">News del giorno</div><div class="chips" data-chips="news"></div>
   </div>
 
-  <div class="sec" data-when="plan,open,closed" data-full>
+  <div class="sec half" data-when="plan,open,closed" data-full>
    <h4>Regole di esecuzione <small>spunta quelle che hai rispettato</small></h4>
    <div class="cklist" data-ck="rules"></div>
    <div class="autochk" id="autoChecks"></div>
@@ -573,7 +590,7 @@ details.more > summary{cursor:pointer;font:700 15px var(--f-display);padding:12p
    <div data-when="closed"><div class="sub2">Voto all'esecuzione <span class="mut" style="font-weight:400">· giudica la decisione, non il risultato</span></div><div class="chips" data-chips="grade"></div></div>
   </div>
 
-  <div class="sec" data-full>
+  <div class="sec half" data-full>
    <h4>Screenshot e grafico</h4>
    <div class="drop" id="drop">Incolla con <b>Cmd+V</b>, trascina qui un'immagine, o <label for="fileIn">sceglila</label><input type="file" id="fileIn" accept="image/*" multiple hidden></div>
    <div class="shots" id="shots"></div>
@@ -880,7 +897,15 @@ function rowHTML(t,s){const st=t.status||'closed';
  <div class="c">${right}</div></div>`}
 function renderList(all,s){$$('#statusFilter button').forEach(b=>b.classList.toggle('on',b.dataset.v===S.statusF));
  let l=all.filter(t=>!S.statusF||(t.status||'closed')===S.statusF);const cl=applyF(l.filter(t=>(t.status||'closed')==='closed'));l=l.filter(t=>(t.status||'closed')!=='closed'||cl.includes(t));
- $('tradeList').innerHTML=sortT(l).reverse().map(t=>rowHTML(t,s)).join('')||'<p class="empty">Nessun trade qui. Tocca "+ Nuovo trade" per aggiungerne uno.</p>'}
+ const list=sortT(l).reverse();if(!list.length){$('tradeList').innerHTML='<p class="empty">Nessun trade qui. Tocca "+ Nuovo trade" per aggiungerne uno.</p>';return}
+ if(window.matchMedia('(min-width:1000px)').matches){$('tradeList').innerHTML=`<div class="card tablecard"><table class="ttable"><thead><tr><th>Entrata</th><th>Strumento</th><th>Stato</th><th>Griglia</th><th>Pattern</th><th>Durata</th><th>Uscita</th><th class="r">R</th><th class="r">P&amp;L</th><th>Errori</th><th></th></tr></thead><tbody>${list.map(t=>{const st=t.status||'closed',cl=st==='closed';
+  return `<tr class="trow" data-open="${esc(t.id)}"><td>${fmtDate(t.in)}</td><td><b>${esc(t.sym||'—')}</b> <span class="pill ${t.dir==='Short'?'S':'L'}">${esc(t.dir||'Long')}</span></td><td>${cl?'<span class="mut">Chiuso</span>':`<span class="pill st-${st}">${STATUS[st]}</span>`}</td>
+  <td>${t.gridTot?`<span class="pill" style="background:var(${t.gridOk?'--win-soft':'--loss-soft'});color:var(${t.gridOk?'--win':'--loss'})">${t.gridScore}/${t.gridTot}</span>`:'<span class="mut">–</span>'}</td>
+  <td class="pat">${setupsOf(t).slice(0,3).map(x=>`<span class="pill">${esc(x)}</span>`).join('')}${setupsOf(t).length>3?`<span class="mut">+${setupsOf(t).length-3}</span>`:''}</td>
+  <td class="mut">${cl?fmtDur(t.durH):'–'}</td><td class="mut">${cl?esc(t.exitType||'–'):st==='missed'?esc(t.missWhy||'–'):'–'}</td>
+  <td class="r ${cls(cl?t.r:t.missR)}"><b>${cl?fR(t.r):st==='missed'&&t.missR!=null?fR(t.missR):'–'}</b></td><td class="r ${cls(t.pnl)}"><b>${cl?money(t.pnl,s):'–'}</b></td>
+  <td>${(t.mis||[]).length?`<span class="pill bad">${t.mis.length}</span>`:'<span class="mut">–</span>'}</td><td class="mut">${(t.imgs||[]).length?'📸 ':''}${t.link?'📈':''}</td></tr>`}).join('')}</tbody></table></div>`;return}
+ $('tradeList').innerHTML=list.map(t=>rowHTML(t,s)).join('')}
 
 function renderMonthly(d,s){const g={};d.forEach(t=>{const k=(t.out||t.in||'').slice(0,7);if(k)(g[k]=g[k]||[]).push(t)});const ks=Object.keys(g).sort().reverse();
  if(!ks.length){$('monthly').innerHTML='<p class="empty">Nessun trade chiuso con questi filtri.</p>';return}
@@ -1316,6 +1341,7 @@ $('fBtn').onclick=()=>{$('filters').hidden=!$('filters').hidden};
 $('fReset').onclick=()=>resetFilters();
 FIDS.forEach(i=>$(i).addEventListener('input',render));
 $('saveSet').onclick=saveSettings;$('expBtn').onclick=exportData;$('impFile').onchange=importFile;
+{let rt;let wide=window.matchMedia('(min-width:1000px)').matches;window.addEventListener('resize',()=>{clearTimeout(rt);rt=setTimeout(()=>{const w=window.matchMedia('(min-width:1000px)').matches;if(w!==wide){wide=w;render()}},200)})}
 window.addEventListener('hashchange',()=>go(location.hash.slice(1),false));
 try{window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change',render)}catch(e){}
 new MutationObserver(render).observe(document.documentElement,{attributes:true,attributeFilter:['data-theme']});

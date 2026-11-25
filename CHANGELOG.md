@@ -3,6 +3,13 @@
 Ogni aggiornamento lascia una copia completa del journal nella cartella [`versioni/`](versioni/), così si può sempre tornare a una versione precedente.
 I dati (trade, impostazioni, screenshot) stanno su Supabase e non cambiano quando si cambia versione del codice.
 
+## v1.4 — 25 novembre 2026 · [`versioni/index-v1.4.html`](versioni/index-v1.4.html)
+- Nuova icona: "E" con una linea che sale (logo, icona della Home dell'iPhone e della scheda del browser). La vecchia icona è salvata in `versioni/icon-v1.3.png`
+- Ottimizzato per il computer: usa tutta la larghezza fino a 2200 pixel; sopra i 1600 pixel gli 8 indicatori stanno su una riga e i grafici sono più alti
+- Lista dei trade come tabella sugli schermi da 1000 pixel in su (lista attuale sul telefono)
+- Form del trade più largo (fino a 1060 pixel) sopra i 1280 pixel, con la griglia su due colonne e le sezioni corte affiancate
+- Telefono invariato
+
 ## v1.3 — 25 novembre 2026 · [`versioni/index-v1.3.html`](versioni/index-v1.3.html)
 - Tolta l'azione della settimana dai Report
 - Tolto il campo Regime (form, filtri, report, scheda del trade)
