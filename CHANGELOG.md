@@ -3,6 +3,12 @@
 Ogni aggiornamento lascia una copia completa del journal nella cartella [`versioni/`](versioni/), così si può sempre tornare a una versione precedente.
 I dati (trade, impostazioni, screenshot) stanno su Supabase e non cambiano quando si cambia versione del codice.
 
+## v1.7 — 26 novembre 2026 · [`versioni/index-v1.7.html`](versioni/index-v1.7.html)
+- In Backtest il calendario della Dashboard diventa "Calendario del lavoro": segna in verde i giorni in cui hai compilato almeno un trade (più trade, verde più intenso), con il numero di trade; oggi resta tratteggiato finché non inserisci il primo
+- Sopra il calendario: giorni di lavoro della settimana (su 7), serie di giorni di fila (weekend inclusi), record e giorni di lavoro nel mese
+- Il giorno di lavoro viene dal momento in cui il trade è stato creato, quindi vale anche per i backtest già inseriti. Le date dei trade non cambiano: report, filtri e mese per mese continuano a usarle
+- In Live il calendario resta quello del profitto e perdita per giorno
+
 ## v1.6 — 25 novembre 2026 · [`versioni/index-v1.6.html`](versioni/index-v1.6.html)
 - Check pre-sessione obbligatorio: il primo "Nuovo trade" del giorno (Live o Backtest, anche da calcolatore e "Salva e nuovo") porta prima al check; appena salvato si apre il trade. Un solo check al giorno vale per entrambe le modalità. Se il giorno non è conforme il trade si può aprire comunque. Modificare o chiudere trade esistenti resta libero
 - Il check ora compare anche in Backtest; ogni nuovo trade ricorda il giorno del check (`ckd`), così i Report confrontano giorni conformi e non anche in Backtest

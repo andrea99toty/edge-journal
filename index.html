@@ -100,6 +100,15 @@ button{font:inherit;color:inherit}
 .cal .d:hover{border-color:var(--acc)}
 .cal .d b{font:600 11px var(--f-mono);overflow:hidden;text-overflow:ellipsis}
 .cal .d.today{border-color:var(--line2)}
+.cal.work .d{cursor:default}.cal.work .d:hover{border-color:transparent}.cal.work .d.today{border-color:var(--acc)}
+.cal.work .d.w1{background:color-mix(in srgb,var(--win) 22%,var(--surface2))}
+.cal.work .d.w2{background:color-mix(in srgb,var(--win) 42%,var(--surface2))}
+.cal.work .d.w3{background:color-mix(in srgb,var(--win) 64%,var(--surface2))}
+.cal.work .d b{color:var(--fg);font-family:var(--f-body)}
+.cal.work .d.todo{border:1px dashed var(--acc);background:transparent}.cal.work .d.todo .n{display:block;color:var(--acc)}
+.cal.work .d.fut{opacity:.45}
+.calstat{display:flex;flex-wrap:wrap;gap:6px 18px;font-size:13px;margin:-2px 0 12px;color:var(--fg)}
+.calstat b.win{color:var(--win)}.calstat em{color:var(--acc);font-style:normal}
 
 .btn.on{border-color:var(--acc);color:var(--acc);background:var(--acc-soft)}
 .fbar{display:flex;flex-wrap:wrap;gap:8px 10px;align-items:center;margin-bottom:14px}
@@ -479,7 +488,7 @@ details.more > summary{cursor:pointer;font:700 15px var(--f-display);padding:12p
     <div class="card"><h3>Win rate</h3><div class="wr"><div class="ring" id="ring"><span id="ringV">–</span></div><div class="wrleg" id="wrleg"></div></div><div class="hint" id="wrci" style="margin-top:12px"></div></div>
    </div>
    <div class="grid two">
-    <div class="card"><h3><span>Calendario P&amp;L</span><span style="display:flex;gap:6px;align-items:center"><button class="btn sm" data-cal="-1" aria-label="Mese precedente">‹</button><small id="calT"></small><button class="btn sm" data-cal="1" aria-label="Mese successivo">›</button></span></h3><div class="cal" id="cal"></div></div>
+    <div class="card"><h3><span id="calH">Calendario P&amp;L</span><span style="display:flex;gap:6px;align-items:center"><button class="btn sm" data-cal="-1" aria-label="Mese precedente">‹</button><small id="calT"></small><button class="btn sm" data-cal="1" aria-label="Mese successivo">›</button></span></h3><div class="calstat" id="calStat" hidden></div><div class="cal" id="cal"></div></div>
     <div class="card"><h3>In corso e recenti</h3><div class="list" id="recent"></div></div>
    </div>
   </section>
@@ -1059,11 +1068,28 @@ function renderDash(d,st,s,all){
  const gold=cv('--acc');
  chart('cEq',{type:'line',data:{labels:['Inizio',...st.curve.map(c=>fmtDate(c.x))],datasets:[{data:[s.capital,...st.curve.map(c=>+c.y.toFixed(2))],borderColor:gold,borderWidth:2,tension:.3,pointRadius:st.curve.length<25?3:0,pointBackgroundColor:gold,fill:true,
   backgroundColor:c=>{const a=c.chart.chartArea;if(!a)return'transparent';const g=c.chart.ctx.createLinearGradient(0,a.top,0,a.bottom);g.addColorStop(0,gold+'44');g.addColorStop(1,gold+'00');return g}}]}});
- renderCal(d,s);
+ renderCal(d,s,all);
  const act=sortT(all.filter(t=>t.status==='open'||t.status==='plan')).reverse(),rec=d.slice(-5).reverse();
  $('recent').innerHTML=[...act,...rec].slice(0,7).map(t=>rowHTML(t,s)).join('')||'<p class="empty">Ancora nessun trade. Tocca "+ Nuovo trade" per registrare il primo.</p>';
 }
-function renderCal(d,s){const y=S.calDate.getFullYear(),m=S.calDate.getMonth();$('calT').textContent=S.calDate.toLocaleDateString('it-IT',{month:'long',year:'numeric'});
+/* giorno in cui il trade è stato compilato: dal campo created o dal timestamp nell'id */
+function workDay(t){let ms=Number(t.created)||null;if(ms==null&&/^t[0-9a-z]{9,}$/.test(t.id||''))ms=parseInt(t.id.slice(1,-4),36);if(!ms||ms<1577836800000||ms>Date.now()+864e5)return null;return ymd(new Date(ms))}
+function renderWorkCal(all){const y=S.calDate.getFullYear(),m=S.calDate.getMonth(),by={};all.forEach(t=>{const k=workDay(t);if(k)by[k]=(by[k]||0)+1});
+ const now=new Date(),today=ymd(now),dayK=o=>{const x=new Date(now);x.setDate(x.getDate()-o);return ymd(x)};
+ let st=0,o=by[today]?0:1;while(by[dayK(o)]){st++;o++}
+ const ks=Object.keys(by).sort();let best=0,run=0,prev=null;ks.forEach(k=>{const dt=new Date(k+'T12:00');run=prev&&Math.round((dt-prev)/864e5)===1?run+1:1;best=Math.max(best,run);prev=dt});
+ const mon=(now.getDay()+6)%7;let wk=0;for(let i=0;i<=mon;i++)if(by[dayK(i)])wk++;
+ const mk=`${y}-${pad(m+1)}`,mDays=ks.filter(k=>k.startsWith(mk)).length;
+ $('calStat').hidden=false;
+ $('calStat').innerHTML=`<span><b>${wk}</b> ${wk===1?'giorno':'giorni'} su 7 questa settimana</span><span>Serie attuale: <b class="${st?'win':''}">${st} ${st===1?'giorno':'giorni'}</b> di fila${by[today]?'':st?' <em>· oggi ancora niente</em>':''}</span><span class="mut">Record: ${best} · ${mDays} ${mDays===1?'giorno':'giorni'} di lavoro nel mese</span>`;
+ const first=(new Date(y,m,1).getDay()+6)%7,days=new Date(y,m+1,0).getDate();
+ let h=['L','M','M','G','V','S','D'].map(x=>`<div class="h">${x}</div>`).join('')+'<div></div>'.repeat(first);
+ for(let i=1;i<=days;i++){const k=`${y}-${pad(m+1)}-${pad(i)}`,n=by[k]||0,lv=n>=4?3:n>=2?2:n?1:0,isT=k===today;
+  h+=`<div class="d w${lv} ${isT?'today':''} ${isT&&!n?'todo':''} ${k>today?'fut':''}" title="${n?n+' trade compilati':''}"><span class="mut">${i}</span>${n?`<b>✓ ${n}</b><span class="n">${n===1?'trade':'trade'}</span>`:isT?'<span class="n">oggi</span>':''}</div>`}
+ $('cal').innerHTML=h}
+function renderCal(d,s,all){const y=S.calDate.getFullYear(),m=S.calDate.getMonth();$('calT').textContent=S.calDate.toLocaleDateString('it-IT',{month:'long',year:'numeric'});
+ $('calH').textContent=S.mode==='bt'?'Calendario del lavoro':'Calendario P&L';$('cal').classList.toggle('work',S.mode==='bt');
+ if(S.mode==='bt'){renderWorkCal(all||[]);return}$('calStat').hidden=true;
  const by={};d.forEach(t=>{const k=(t.out||t.in||'').slice(0,10);if(!k)return;(by[k]=by[k]||{p:0,n:0});by[k].p+=t.pnl;by[k].n++});
  const first=(new Date(y,m,1).getDay()+6)%7,days=new Date(y,m+1,0).getDate(),mx=Math.max(1,...Object.values(by).map(v=>Math.abs(v.p))),today=ymd(new Date());
  let h=['L','M','M','G','V','S','D'].map(x=>`<div class="h">${x}</div>`).join('')+'<div></div>'.repeat(first);
